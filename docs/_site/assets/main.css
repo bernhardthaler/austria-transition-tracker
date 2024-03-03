@@ -130,11 +130,11 @@ table td { border: 1px solid #e8e8e8; }
 
 .row { display: flex; flex-wrap: wrap; }
 
-.column_left { width: 48%; }
+.column_left { flex-basis: 600px; flex-grow: 0.1; }
 
-.spacer { flex-grow: 1; }
+.spacer { width: 5%; flex-grow: 1; }
 
-.column_right { width: 48%; }
+.column_right { flex-basis: 600px; flex-grow: 2; }
 
 .spacer_left { flex-grow: 1; }
 

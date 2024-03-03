@@ -220,15 +220,18 @@
 }
 
 .column_left {
-  width: 48%;
+  flex-basis: 600px;
+  flex-grow: 0.1;
 }
 
 .spacer {
+  width: 5%;
   flex-grow: 1;
 }
 
 .column_right {
-  width: 48%;
+  flex-basis: 600px;
+  flex-grow: 2;
 }
 
 .spacer_left {
