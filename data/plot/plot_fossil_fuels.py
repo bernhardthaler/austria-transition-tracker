@@ -485,7 +485,8 @@ def plot_extrapolation_demo():
     ax[1].set_ylim([0, max([max(error_consumption_projection),
                             max(error_emission_projection)])*1.1])
     ax[1].legend() 
-    ax[1].set_ylabel("CO2 emissions (Mt)")
+    ax[1].set_ylabel("CO2 emissions (Mt_CO2e)")
+    ax[1].set_xlabel("Month")
     ax[1].grid() 
     
     plt.tight_layout() 
@@ -576,6 +577,7 @@ def plot_emission_estimate_demo():
     ax[1].set_ylim([0, max(emissions_energy_years)*1.1])
     ax[1].legend() 
     ax[1].set_ylabel("CO2 emissions (Mt)")
+    ax[1].set_xlabel("Year")
     ax[1].grid() 
     
     plt.tight_layout() 
@@ -587,8 +589,8 @@ def plot_emission_estimate_demo():
 
     
 if __name__ == "__main__":
-    extrapolate_fossil_fuels()
-    data = extrapolate_emissions(plot = True)
-    # 
-    # data = plot_extrapolation_demo()
-    # plot_emission_estimate_demo()
+    # extrapolate_fossil_fuels()
+    # data = extrapolate_emissions(plot = True)
+    # # 
+    data = plot_extrapolation_demo()
+    plot_emission_estimate_demo()

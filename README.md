@@ -8,6 +8,6 @@ Under "data" you can find all python scripts to download and plot all charts. No
 Under "docs" you find all html/css/md files relevant for the homepage. 
 
 ## Setting up the site locally 
-To run the side on a localhost, install (<a href = "https://jekyllrb.com/docs/installation/windows/">Jekyll and Bundler via Ruby </a>. If Jekyll is installe, run "bundle exec jekyll serve" in the "docs" directory. You should then be able to navigate to the site via "localhost:3000" in any browser. 
+To run the site on a localhost, install <a href = "https://jekyllrb.com/docs/installation/windows/">Jekyll and Bundler via Ruby </a>. If Jekyll has been installed, run "bundle exec jekyll serve" in the "docs" directory. You should then be able to navigate to the site via "localhost:3000" in any browser. 
 
 

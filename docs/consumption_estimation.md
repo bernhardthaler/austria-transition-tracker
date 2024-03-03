@@ -62,7 +62,7 @@ In order to estimate CO<sub>2</sub> emissions from these data, fuel-specific emi
   The figure to the right (upper chart) compares these estimated emissions with the actual emissions from the energy-related sectors (<i>Transport, Energy&Industry</i> and <i>Buildings</i>). It can be seen that there is a systematic gap, caused by several systematic errors: 
 <ul>
   <li>The calculated data do not consider process emissions from non fossil-fuel based industry secors (mainly cement and lime production, approximately 2.5 Mt<sub>CO2</sub> in 2021). </li>
-  <li>Calculated data focus on CO2 emissions, and do not consider CH4 and N2O emissions, including fugitive emissions. </li>
+  <li>Calculated data focus on CO<sub>2</sub> emissions, and do not consider CH<sub>4</sub> and N<sub>2</sub>O emissions, including fugitive emissions. </li>
   <li>Energy-related emissions from the agriculture sector are included in the calculated emissions, but not in the actual emissions used here. </li>
   <li>Not all fuels are considered, and integrated process routes in the industry sector (especially steel and chemical industry) might be oversimplified. </li>
 </ul> 
@@ -90,7 +90,7 @@ To account for these systematic effects, an approach similar to the consumption 
   <div class="spacer"></div>
  
   <div class = "column_right">
-Together the fuel consumption extrapolation and the emission estimation allow to estimate CO2 emissions based on non-fully available yearly data. In the first step, yearly fuel consumption is extrapolated from available monthly data and the second step, emissions are estimated based on the described scaling:
+Together the fuel consumption extrapolation and the emission estimation allow to estimate CO<sub>2</sub> emissions based on non-fully available yearly data. In the first step, yearly fuel consumption is extrapolated from available monthly data and in the second step, emissions are estimated based on the described scaling:
 
 $$ E^{scaled}_{y} = (\sum_f C_{f,m,y} \cdot \overline{F^{cons}_{f,m}} \cdot  NCV_f \cdot e_f) \cdot \overline{F^{em}_y}$$ 
 
