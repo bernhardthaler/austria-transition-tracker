@@ -1,4 +1,10 @@
 {
+      "meta": {
+            "chart": "AT_timeseries_consumption_gasoline_yearly",
+            "data_source": "eurostat (NRG_CB_OILM)",
+            "info": "Extrapolations based on monthly available data scaled with past trends",
+            "created": "2024-03-03"
+      },
       "Observed: Jan - Nov": {
             "2008-01-01": 1613.0,
             "2009-01-01": 1607.0,

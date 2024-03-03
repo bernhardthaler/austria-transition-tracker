@@ -1,4 +1,10 @@
 {
+      "meta": {
+            "chart": "AT_timeseries_consumption_hard_coal_coke_ovens_yearly",
+            "data_source": "eurostat (NRG_CB_SFFM)",
+            "info": "Extrapolations based on monthly available data scaled with past trends",
+            "created": "2024-03-03"
+      },
       "Observed: Jan - Nov": {
             "2008-01-01": 1638.0,
             "2009-01-01": 1397.0,

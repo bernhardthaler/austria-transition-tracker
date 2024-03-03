@@ -1,4 +1,10 @@
 {
+      "meta": {
+            "chart": "AT_timeseries_agriculture_emissions_sectors",
+            "data_source": "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated",
+            "info": "<Other> data scaled to match total emissions from UBA dashboard",
+            "created": "2024-03-03"
+      },
       "Fermentation (cows)": {
             "1990-01-01": 5.05458,
             "1991-01-01": 4.9932799999999995,

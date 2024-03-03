@@ -14,7 +14,7 @@ layout: home
   On the top menu you can navigate to different sub-sector pages that show detailed data of each sector. <br>
   <br> 
   Additional datasets might be added in future - any suggestions are very welcome! <br>
-  For more information, data sources, and technical details please visit the <b><a href= "/about">About page.</a></b> <br> 
+  For more information, data sources, and technical details please visit the <b><a href= "/about/">About page.</a></b> <br> 
   <br>   
   </div>
 
@@ -35,7 +35,7 @@ layout: home
   <div class="column_right">
  
  <br> 
-  Official detailed emission statistics are only available several months after the respective year. However, rough emission projections are possible with more timely available fossil fuel consumption data. On the chart to the left a projection of Austrian greenhouse gas emissions with latest available data is shown. The exact methodology <b><a href= "/consumption-estimation">is described here</a></b>. In short, eurostat data of fossil fuel consumption is extrapolated to the full year and scaled with emission factors to arrive at actual energy-sector related emission estimations (Transport, Buildings, Energy & Industry, including process emissions). Other sectors (Agriculture, Waste, Fluorinated Gases) are extrapolated based on current trends. <br> 
+  Official detailed emission statistics are only available several months after the respective year. However, rough emission projections are possible with more timely available fossil fuel consumption data. On the chart to the left a projection of Austrian greenhouse gas emissions with latest available data is shown. The exact methodology <b><a href= "/consumption-estimation/">is described here</a></b>. In short, eurostat data of fossil fuel consumption is extrapolated to the full year and scaled with emission factors to arrive at actual energy-sector related emission estimations (Transport, Buildings, Energy & Industry, including process emissions). Other sectors (Agriculture, Waste, Fluorinated Gases) are extrapolated based on current trends. <br> 
   <br> 
   The model is rather simple and based on past data and temporal correlation. Extrapolated data must therefore be interpreted with great care, especially early in the year! <br> 
   <br> 

@@ -230,8 +230,8 @@ def extrapolate_fossil_fuels(plot = True):
                           colors = colors_plot,
                           show_plot = False,
                           unit_fac= 1, 
-                          source_text = ("eurostat (%s) <br>Extrapolations based on monthly available data scaled " 
-                                         "with past trends" %(fossils[f]["code"])),
+                          source_text = "eurostat (%s)" %(fossils[f]["code"]),
+                          info_text = "Extrapolations based on monthly available data scaled with past trends",
                           plot_type = "bar")
     
         consumption[f] = {"data": {times_years[t]: yearly_consumptions[t] for t in range(len(times_years))},

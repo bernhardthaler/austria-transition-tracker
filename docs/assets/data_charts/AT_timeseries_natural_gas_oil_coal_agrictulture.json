@@ -1,4 +1,10 @@
 {
+      "meta": {
+            "chart": "AT_timeseries_natural_gas_oil_coal_agrictulture",
+            "data_source": "eurostat (nrg_bal_c)",
+            "info": null,
+            "created": "2024-03-03"
+      },
       "Natural gas": {
             "1990-01-01": 0.10175,
             "1991-01-01": 0.12225,
