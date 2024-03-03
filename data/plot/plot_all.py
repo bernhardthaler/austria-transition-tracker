@@ -14,6 +14,7 @@ import plot_agriculture
 import plot_transport 
 import plot_industry 
 import plot_emissions_sectors
+import plot_energy 
 
 
 def plot_all():
@@ -25,7 +26,8 @@ def plot_all():
     plot_transport.plot()
     plot_industry.plot()
     plot_emissions_sectors.plot()
-
+    plot_energy.plot()
+    
   
 if __name__ == "__main__": 
     plot_all()
