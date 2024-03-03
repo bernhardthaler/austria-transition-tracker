@@ -30,7 +30,7 @@ $$\hat{\sigma_{F^{cons}_{f,m}}} = \sqrt{\frac{1}{N-1.5}\sum_y (\overline{F^{cons
 
 This deviation allows to estimate the uncertainty of the fuel consumption projection. In the figure below, results of the approach to predict data of 2022 can be seen, with scaling factors calculated from the years 2013-2021. Although the prediction is not bad, there is still some systematic error, which cannont be explained by the pure statistical features. Especially the unstable situation of energy markets in the last years adds additional uncertainties. For example, the full year natural gas consumption is overestimated taking data until summer 2022. High prices during the second half of the year probably led to a consumption decrease compared to previous years that could not be projected. Extrapolation results have therefore be taken with great care. Data displayed on the <a href= "/" >tracker start page</a> always use training data up to the last year. 
 
-<img src="/assets/images/fossil_fuel_consumption_estimation.png" alt="">
+<img src="./assets/images/fossil_fuel_consumption_estimation.png" alt="">
 
 
 In order to estimate CO<sub>2</sub> emissions from these data, fuel-specific emissions of the following commodities are calculated using emission factors taken from the <a href = "https://www.umweltbundesamt.at/studien-reports/publikationsdetail?pub_id=2474&cHash=682457cf175c26a3d9639b6ef68c1c3b">National Inventory Report</a> and net calorific values (NCV) taken from <a href = "https://www.statistik.at/statistiken">Statistics Austria Energy Balances</a>: 
@@ -71,7 +71,7 @@ To account for these systematic effects, an approach similar to the consumption 
   <div class="spacer"></div>
 
   <div class="column_right">
-  <img src="/assets\images\emissions_estimation.png" alt="">
+  <img src="./assets\images\emissions_estimation.png" alt="">
   </div>
 
 </div> 
@@ -79,7 +79,7 @@ To account for these systematic effects, an approach similar to the consumption 
 
 <div class="row">
   <div class="column_left">
-   <img src="/assets\images\emissions_projection_2022.png" alt="">
+   <img src="./assets\images\emissions_projection_2022.png" alt="">
   </div>
 
   <div class="spacer"></div>
