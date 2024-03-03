@@ -589,8 +589,8 @@ def plot_emission_estimate_demo():
 
     
 if __name__ == "__main__":
-    # extrapolate_fossil_fuels()
-    # data = extrapolate_emissions(plot = True)
-    # # 
-    data = plot_extrapolation_demo()
-    plot_emission_estimate_demo()
+    extrapolate_fossil_fuels()
+    data = extrapolate_emissions(plot = True)
+    
+    # data = plot_extrapolation_demo()
+    # plot_emission_estimate_demo()

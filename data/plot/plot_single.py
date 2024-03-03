@@ -311,11 +311,6 @@ def plot_single_go(title = "",
         json.dump(data_dict, fp, indent = 6)
 
 
-    # fig.for_each_trace(lambda trace: trace.update(fillcolor = trace.line.color.rstrip(")")+",0.5)".replace("rgb", "gba")))
-
-    # fig.for_each_trace(lambda trace: print(trace.line.color))
-
-
     """ show and save plot """
     if show_plot: 
         fig.show(renderer = "browser")
