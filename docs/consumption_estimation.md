@@ -4,12 +4,7 @@ title: Fossil fuel consumption projection and emission extrapolation
 permalink: /consumption-estimation/
 ---
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-</script>
-<script type="text/javascript"
-  src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 
 This page describes a simple, purely data-based method to project fossil fuel consumption and related CO$_2$ emissions within a year with available monthly data from eurostat. The basic idea of the approach is to extrapolate the trend in fuel consumption of past months within a year to fully yearly values.<br> 
 <br> 
