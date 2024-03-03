@@ -56,10 +56,8 @@ def plot():
                       time_res = "yearly",
                       show_plot = False,
                       legend_inside = False,
-                      # colors = list([colors_heatings[label] for label in colors_heatings]),
-                      source_text = "Austria National Inventory Report 2023, <br>"
-                      "Umweltbundesamt (Klimadashboard), sectoral data 2022 extrapolated<br>"
-                      "<Other> data scaled to match total emissions from UBA dashboard",
+                      source_text = "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated",
+                      info_text = "<Other> data scaled to match total emissions from UBA dashboard",
                       plot_type = "area",
                       plotmax_fac = 1.1)
         

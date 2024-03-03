@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 import numpy as np
 import plotly.express as px
 import json 
+import datetime 
 
 def plot_single_go(title = "",
                    unit = "",
@@ -20,6 +21,7 @@ def plot_single_go(title = "",
                    colors = None,
                    time_res = "monthly",
                    source_text = None,
+                   info_text = None,
                    plot_type = "line",
                    plotmax_fac = 1.1):
     
@@ -273,6 +275,11 @@ def plot_single_go(title = "",
             t=30+margin_up_shift,
             ),
         )
+    
+    if info_text != None: 
+        info_add = "<br>"+info_text 
+    else: 
+        info_add = ""
 
     fig.add_annotation(dict(
         font=dict(size=7),
@@ -281,7 +288,7 @@ def plot_single_go(title = "",
         showarrow=False,
         text=("Chart by B.Thaler | Austria Transition Tracker | "
             "<a href = \"https://creativecommons.org/licenses/by/4.0/\">CC BY 4.0</a>"
-            "<br>Data source: " +source_text),
+            "<br>Data source: " +source_text)+info_add,
         xanchor='right',
         yanchor = "top",
         xref="paper",
@@ -290,7 +297,12 @@ def plot_single_go(title = "",
 
     
     """ save figure data as static json file """
-    data_dict = {}
+    data_dict = {"meta": {"chart": filename,
+                          "data_source": source_text,
+                          "info": info_text,
+                          "created": datetime.datetime.today().strftime("%Y-%m-%d")
+        }}
+    
     if plot_type == "area_button": 
         for bal in data_plot:
             data_dict[bal] = {}

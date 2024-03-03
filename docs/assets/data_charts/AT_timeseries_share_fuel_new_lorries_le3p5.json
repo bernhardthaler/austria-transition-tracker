@@ -1,4 +1,10 @@
 {
+      "meta": {
+            "chart": "AT_timeseries_share_fuel_new_lorries_le3p5",
+            "data_source": "eurostat (road_eqr_lormot)",
+            "info": null,
+            "created": "2024-03-03"
+      },
       "Electric": {
             "2013-01-01": 0.6243054193632739,
             "2014-01-01": 0.6536579082946935,

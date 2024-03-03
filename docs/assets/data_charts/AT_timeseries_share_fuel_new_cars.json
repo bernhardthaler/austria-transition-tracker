@@ -1,4 +1,10 @@
 {
+      "meta": {
+            "chart": "AT_timeseries_share_fuel_new_cars",
+            "data_source": "eurostat (road_eqr_carpda) & Statistik Austria",
+            "info": null,
+            "created": "2024-03-03"
+      },
       "Electric": {
             "2013-01-01": 0.20499318256617616,
             "2013-02-01": 0.20499318256617616,

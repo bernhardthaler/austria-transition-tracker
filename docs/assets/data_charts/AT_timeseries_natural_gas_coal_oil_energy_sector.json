@@ -1,4 +1,10 @@
 {
+      "meta": {
+            "chart": "AT_timeseries_natural_gas_coal_oil_energy_sector",
+            "data_source": "eurostat (nrg_bal_c)",
+            "info": null,
+            "created": "2024-03-03"
+      },
       "Natural gas - Electricity & District Heat generation": {
             "1990-01-01": 20.75275,
             "1991-01-01": 21.38,

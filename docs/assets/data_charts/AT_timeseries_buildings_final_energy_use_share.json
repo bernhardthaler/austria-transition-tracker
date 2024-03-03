@@ -1,4 +1,10 @@
 {
+      "meta": {
+            "chart": "AT_timeseries_buildings_final_energy_use_share",
+            "data_source": "eurostat energy balances (nrg_bal_c)",
+            "info": null,
+            "created": "2024-03-03"
+      },
       "Total": {
             "Natural gas": {
                   "1990-01-01": 0.13538406052048102,
