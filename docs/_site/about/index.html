@@ -28,6 +28,19 @@
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script> 
   
 
+  <script> 
+
+    // Wait for the document to be fully loaded
+  document.addEventListener("DOMContentLoaded", function() {
+      // Delay for 500 milliseconds (adjust as needed)
+      setTimeout(function() {
+          // Trigger a resize event on the window
+          window.dispatchEvent(new Event('resize'));
+      }, 100); // Adjust delay as needed
+  });
+
+</script>
+
 </head>
 
 

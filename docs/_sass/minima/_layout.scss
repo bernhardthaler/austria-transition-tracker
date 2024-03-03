@@ -221,17 +221,17 @@
 
 .column_left {
   flex-basis: 600px;
-  flex-grow: 0.1;
+  flex-grow: 3;
 }
 
 .spacer {
-  width: 5%;
+  flex-basis: 5%;
   flex-grow: 1;
 }
 
 .column_right {
-  flex-basis: 600px;
-  flex-grow: 2;
+  flex-basis: 600px; 
+  flex-grow: 3;
 }
 
 .spacer_left {
