@@ -5,6 +5,8 @@ permalink: /agriculture/
 ---
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
   <br>
   The largest contribution of emissions in the Austrian agriculture sector
@@ -20,10 +22,14 @@ permalink: /agriculture/
   <div class="column_right">
     {% include AT_timeseries_agriculture_emissions_sectors.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_animal_feestock_population.html %}
   </div>
@@ -33,10 +39,14 @@ permalink: /agriculture/
   <div class="column_right">
     {% include AT_timeseries_raw_cow_milk.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_sloughtered_pig_meat.html %}
   </div>
@@ -46,10 +56,14 @@ permalink: /agriculture/
   <div class="column_right">
     {% include AT_timeseries_sloughtered_cattle_meat.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_sloughtered_chicken_meat.html %}
   </div>
@@ -59,10 +73,14 @@ permalink: /agriculture/
   <div class="column_right">
     {% include AT_timeseries_fertilizer_nitrogen.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_agriculture_final_energy_use_share.html %}
   </div>
@@ -72,6 +90,8 @@ permalink: /agriculture/
   <div class="column_right">
     {% include AT_timeseries_agriculture_final_energy_use.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 

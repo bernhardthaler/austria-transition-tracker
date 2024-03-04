@@ -231,14 +231,14 @@ def plot_single_go(title = "",
         margin_up_shift = 0
         xanchor = "right" 
         
-        # if plotmax_fac == 1: 
-        #     fig.update_layout(
-        #         yaxis_range=[0, plotmax])
+        if plotmax_fac == 1: 
+            fig.update_layout(
+                yaxis_range=[0, plotmax])
         
         
     else: 
-        # fig.update_layout(
-        #     yaxis_range=[0, plotmax])
+        fig.update_layout(
+            yaxis_range=[0, plotmax])
         title_shift_x = 0
         title_shift_y = 0
         margin_up_shift = 0
@@ -251,14 +251,14 @@ def plot_single_go(title = "",
         autosize = True,
         legend=legend_dict,
         yaxis = dict(
-            autorange = True,
+            # autorange = True,
             tickfont = dict(
                 size = 12),
             titlefont = dict(
                 size = 12)
             ),
         xaxis = dict(
-            autorange = True,
+            # autorange = True,
             tickfont = dict(
                 size = 12)
             ),        
@@ -350,7 +350,7 @@ def plot_single_go(title = "",
                 "click: () => {"
                 "var filename = \'%s.json\';"
                 # "var jsonUrl = \'{{site.baseurl}}assets/data_charts/%s.json\';"
-                "var jsonUrl = \"{{ \"/assets/data_charts/%s.json\" | relative_url }}\";"
+                "var jsonUrl = \'{{ \'/assets/data_charts/%s.json\' | relative_url }}\';"
                 "var link = document.createElement(\'a\');"
                 "link.href = jsonUrl;"
                 "link.setAttribute(\'download\', filename);"

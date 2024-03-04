@@ -4,6 +4,8 @@ layout: home
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
   <br>
   <b>Welcome to the <i>Austria Transition Tracker!</i> </b> <br>
@@ -18,14 +20,21 @@ layout: home
   <br>   
   </div>
 
+ <div class="spacer"></div>
   <div class="spacer"></div>
 
   <div class="column_right">
       {% include AT_timeseries_co2_emissions_sectors.html %}
   </div>
+
+   <div class="spacer"></div>
+
 </div> 
 
 <div class="row">
+
+ <div class="spacer"></div>
+
   <div class="column_left"> 
    {% include AT_timeseries_emissions_projection_yearly.html %}
    </div>
@@ -41,6 +50,9 @@ layout: home
     Yearly and monthly fuel consumption data (including extrapolations) of all considered fossil fuels are shown below.<br><br>
 
   </div>
+
+   <div class="spacer"></div>
+
 </div> 
 
 
@@ -48,6 +60,9 @@ layout: home
 </div> 
 
 <div class="row">
+
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_consumption_natural_gas_monthly.html %}
   </div>
@@ -57,9 +72,15 @@ layout: home
   <div class="column_right">
    {% include AT_timeseries_consumption_natural_gas_yearly.html %}
   </div>
+
+   <div class="spacer"></div>
+
 </div> 
 
 <div class="row">
+
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_consumption_gasoline_monthly.html %}
   </div>
@@ -69,10 +90,15 @@ layout: home
   <div class="column_right">
       {% include AT_timeseries_consumption_gasoline_yearly.html %}
   </div>
+
+   <div class="spacer"></div>
+
 </div> 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_consumption_diesel_monthly.html %}
   </div>
@@ -82,10 +108,14 @@ layout: home
   <div class="column_right">
       {% include AT_timeseries_consumption_diesel_yearly.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_consumption_heating_oil_monthly.html %}
   </div>
@@ -95,10 +125,14 @@ layout: home
   <div class="column_right">
       {% include AT_timeseries_consumption_heating_oil_yearly.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_consumption_refinery_gas_monthly.html %}
   </div>
@@ -108,6 +142,8 @@ layout: home
   <div class="column_right">
       {% include AT_timeseries_consumption_refinery_gas_yearly.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 

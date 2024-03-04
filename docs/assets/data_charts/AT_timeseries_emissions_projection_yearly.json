@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_emissions_projection_yearly",
             "data_source": "Umweltbundesamt, eurostat & own projection",
             "info": null,
-            "created": "2024-03-03"
+            "created": "2024-03-04"
       },
       "Energy sectors": {
             "1990-01-01": 63.089177470821994,

@@ -5,6 +5,8 @@ permalink: /energy_industry/
 ---
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     <br>
     CO<sub>2</sub> emissions in the Energy and Industry sector stem from various sub-sectors and sources. Further, process- and energy related emissions must be differntiated. Energy-related emissions stem from the classical burning of fossil fuels in order to produce power or heat. Process-related emissions are a by-product of industrial production processes and are not necessarily caused by fossil fuels (e.g., cement production). <br>
@@ -18,10 +20,14 @@ permalink: /energy_industry/
   <div class="column_right">
       {% include AT_timeseries_energy_industry_emissions_sectors.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
-<div class="row">
+<div class="row"> 
+<div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_industry_final_energy_use_share.html %}
   </div>
@@ -31,9 +37,13 @@ permalink: /energy_industry/
   <div class="column_right">
     {% include AT_timeseries_industry_final_energy_use.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
    {% include AT_timeseries_elec_energy_use_share.html %}
   </div>
@@ -43,11 +53,15 @@ permalink: /energy_industry/
   <div class="column_right">
          {% include AT_timeseries_elec_energy_use.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
    {% include AT_timeseries_dh_energy_use_share.html %}
   </div>
@@ -57,10 +71,14 @@ permalink: /energy_industry/
   <div class="column_right">
          {% include AT_timeseries_dh_energy_use.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
   </div>
 
@@ -68,4 +86,6 @@ permalink: /energy_industry/
 
   <div class="column_right">
   </div>
+   <div class="spacer"></div>
+
 </div> 

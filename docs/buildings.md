@@ -5,6 +5,8 @@ permalink: /buildings/
 ---
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
   
     <br> 
@@ -18,11 +20,15 @@ permalink: /buildings/
   <div class="column_right">
       {% include AT_timeseries_buildings_emissions_sectors.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_buildings_final_energy_use_share.html %}
   </div>
@@ -32,21 +38,30 @@ permalink: /buildings/
   <div class="column_right">
     {% include AT_timeseries_buildings_final_energy_use.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_heating_oil_consumption.html %}
   </div>
 
   <div class="spacer"></div>
+    <div class="column_right">
+  </div>
+ <div class="spacer"></div>
 
 </div> 
 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_share_heating_systems.html %}
   </div>
@@ -56,6 +71,8 @@ permalink: /buildings/
   <div class="column_right">
     {% include AT_timeseries_number_heating_systems.html %}
   </div>
+   <div class="spacer"></div>
+
 
 </div> 
 

@@ -220,18 +220,19 @@
 }
 
 .column_left {
-  flex-basis: 600px;
-  flex-grow: 3;
+  flex-basis: 640px;
+  //flex-grow: 1;
+
 }
 
 .spacer {
-  flex-basis: 5%;
+  //flex-basis: 100px;
   flex-grow: 1;
 }
 
 .column_right {
-  flex-basis: 600px; 
-  flex-grow: 3;
+  flex-basis: 640px; 
+  //flex-grow: 1;
 }
 
 .spacer_left {

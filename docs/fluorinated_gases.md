@@ -5,6 +5,8 @@ permalink: /fluorinated_gases/
 ---
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
 
     Fluroinated gases are various Fluor-containing molecules (SF<sub>6</sub>, NF<sub>3</sub>, PFC, HFC) that are found in different industry and product sectors. <br>
@@ -19,4 +21,6 @@ permalink: /fluorinated_gases/
   <div class="column_right">
       {% include AT_timeseries_fluorinated_gases_emissions_sectors.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 

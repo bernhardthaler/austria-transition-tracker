@@ -5,6 +5,8 @@ permalink: /waste/
 ---
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
   <br> 
   Waste sector greenhouse gas emissions have historically been mostly related to CH<sub>4</sub> emissions of biological waste in landfills. Due to stricter legislation and policy measures the amount of untreated waste in landfills has however declined in the last years. <br> 
@@ -19,4 +21,6 @@ permalink: /waste/
   <div class="column_right">
       {% include AT_timeseries_waste_emissions_sectors.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
