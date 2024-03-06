@@ -213,7 +213,7 @@ def plot_single_go(title = "",
             y=-0.07,
             xanchor="left",
             x=0.01)
-        bottomshift = 50
+        bottomshift = 100
     
     
     if plot_type == "area_button": 

@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_share_fuel_stock_cars",
             "data_source": "eurostat (road_eqs_carpda)",
             "info": null,
-            "created": "2024-03-03"
+            "created": "2024-03-04"
       },
       "Electric": {
             "2013-01-01": 0.04459949652123927,
