@@ -21,7 +21,6 @@ layout: home
   </div>
 
  <div class="spacer"></div>
-  <div class="spacer"></div>
 
   <div class="column_right">
       {% include AT_timeseries_co2_emissions_sectors.html %}
@@ -58,6 +57,26 @@ layout: home
 
 <div class="row">
 </div> 
+
+<div class="row">
+
+ <div class="spacer"></div>
+
+  <div class="column_left">
+    {% include AT_timeseries_emissions_fuels_monthly.html %}
+  </div>
+  
+ <div class="spacer"></div>
+
+  <div class="column_right">
+   {% include AT_timeseries_emissions_fuels_yearly.html %}
+  </div>
+
+   <div class="spacer"></div>
+
+</div> 
+
+
 
 <div class="row">
 
@@ -149,6 +168,8 @@ layout: home
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_consumption_hard_coal_electricity_monthly.html %}
   </div>
@@ -158,10 +179,14 @@ layout: home
   <div class="column_right">
       {% include AT_timeseries_consumption_hard_coal_electricity_yearly.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_consumption_hard_coal_industry_monthly.html %}
   </div>
@@ -171,11 +196,15 @@ layout: home
   <div class="column_right">
       {% include AT_timeseries_consumption_hard_coal_industry_yearly.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_consumption_hard_coal_coke_ovens_monthly.html %}
   </div>
@@ -185,12 +214,16 @@ layout: home
   <div class="column_right">
       {% include AT_timeseries_consumption_hard_coal_coke_ovens_yearly.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 
 
 
 
 <div class="row">
+ <div class="spacer"></div>
+
   <div class="column_left">
     {% include AT_timeseries_consumption_coke_oven_coke_monthly.html %}
   </div>
@@ -200,5 +233,7 @@ layout: home
   <div class="column_right">
       {% include AT_timeseries_consumption_coke_oven_coke_yearly.html %}
   </div>
+   <div class="spacer"></div>
+
 </div> 
 

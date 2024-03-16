@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_elec_energy_use",
             "data_source": "eurostat energy balances (nrg_bal_c)",
             "info": null,
-            "created": "2024-03-04"
+            "created": "2024-03-13"
       },
       "PV": {
             "1990-01-01": 0.0,
