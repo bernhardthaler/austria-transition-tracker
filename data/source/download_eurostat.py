@@ -16,6 +16,11 @@ def download_and_save(name = "",
                       filters = {}):
     print("Downloading data %s ..." %(name))
     
+    ### load already present data 
+    df_old = pd.read_excel("../data_raw/eurostat/%s_%s_%s.xlsx" %(geo[0], name, code))
+    times_old = df_old.keys()
+    # print(times)
+    
     my_filter_pars = {'startPeriod': start_period, 
                       'geo': geo}
     
@@ -38,6 +43,10 @@ def download_and_save(name = "",
     df = pd.DataFrame(data)
     df.to_excel("../data_raw/eurostat/%s_%s_%s.xlsx" %(geo[0], name, code))
     
+    times_new = df.keys() 
+    for time in times_new: 
+        if time not in times_old and sum(df[time]) > 0: 
+            print("New data point: %s" %(time))
     
 if __name__ == "__main__": 
     

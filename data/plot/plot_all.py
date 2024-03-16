@@ -22,6 +22,7 @@ def plot_all():
     plot_buildings.plot()
     plot_fossil_fuels.extrapolate_fossil_fuels()
     plot_fossil_fuels.extrapolate_emissions(plot = True)
+    plot_fossil_fuels.plot_emissions_fuels()
     plot_agriculture.plot()
     plot_transport.plot()
     plot_industry.plot()

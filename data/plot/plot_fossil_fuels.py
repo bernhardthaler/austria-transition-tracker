@@ -106,6 +106,12 @@ fossils = {"Natural gas": {"file": "gas",
 #                             "em_fac": 55.4}}  #t_CO2 / TJ 
 
 
+fossil_categories = {"Gas": ["Natural gas"],
+                     "Oil": ["Gasoline", "Diesel", "Heating gas oil", "Refinery gas"],
+                     "Coal": ["Coke oven coke", "Hard coal - coke ovens",
+                              "Hard coal - industry sector", "Hard coal - electricity sector"]}
+
+
 dark2 = px.colors.qualitative.Dark2
 set2 = px.colors.qualitative.Set2
 colors  = {"yearly_to": dark2[0],
@@ -152,6 +158,7 @@ def extrapolate_fossil_fuels(plot = True):
     """ extrapolate the consumption data of fossil fuels to the end of year based on historic factors """
     
     consumption = {}
+    emissions_yearly = {"data": {}}
     
     for f in fossils: 
         ### MONTHLY 
@@ -177,12 +184,12 @@ def extrapolate_fossil_fuels(plot = True):
         if f in ["Diesel", "Gasoline"]: 
             data_monthly["data"]["Monthly"] = data_monthly["data"]["%s Monthly" %(f)]
         
-        
         ### YEARLY AND EXTRAPOLATION 
         data_raw = filter_fossil_extrapolation.cut_data_fossil(data_monthly)
         data_extrapolated = filter_fossil_extrapolation.extrapolate_data_fossil(data_raw)
-        
+
         years = [year for year in data_raw["values_year_to_last_month"]]
+
         times_years = pd.date_range(start = datetime(year = years[0], month = 1, day =1),
                               end = datetime(year = years[-1], month = 1, day = 1),
                               freq="YS")
@@ -195,7 +202,7 @@ def extrapolate_fossil_fuels(plot = True):
                           "y": np.array(values_year_to_last_month)},
                          }}
         colors_plot = [colors["yearly_to"]] 
-            
+
         if last_month.month != 12: 
             ### values from latest month on 
             values_year_from_last_month = [data_raw['values_year_from_last_month'][year] for year in data_raw['values_year_from_last_month']]
@@ -212,7 +219,10 @@ def extrapolate_fossil_fuels(plot = True):
                 "x": times_years,
                 "y": np.array(values_extrapolated)}
             colors_plot.append(colors["extrapolated"])
-            
+        else:
+            values_year_from_last_month = np.zeros(len(times_years))
+            values_extrapolated = np.zeros(len(times_years))
+
         ### sum up consumption data for emission estimation 
         yearly_consumptions = (np.array(values_year_to_last_month)+
                                np.array(values_year_from_last_month) + 
@@ -224,7 +234,7 @@ def extrapolate_fossil_fuels(plot = True):
         if plot: 
             plot_single_go(title = "<b>%s</b>: yearly consumption" %(f),
                           filename = "AT_timeseries_consumption_%s_yearly" %(fossils[f]["save_name"]),
-                          unit = "Conumption (%s)" %(fossils[f]["options"]["unit"]),
+                          unit = "Consumption (%s)" %(fossils[f]["options"]["unit"]),
                           data_plot = data,
                           time_res = "yearly",
                           colors = colors_plot,
@@ -239,10 +249,83 @@ def extrapolate_fossil_fuels(plot = True):
                           "std_energy": data_extrapolated["std_energy"]}
         
         
+    for cat in fossil_categories:
+        for f in fossil_categories[cat]: 
+            fac = fossils[f]["NCV"]*fossils[f]["em_fac"]/1000
+            values = np.array([consumption[f]["data"][t] for t in consumption[f]["data"]])*fac
+            if cat in emissions_yearly["data"]: 
+                emissions_yearly["data"][cat]["y"] += values 
+            else: 
+                emissions_yearly["data"][cat] = {"x": [t for t in consumption[f]["data"]],
+                                     "y": values}    
+                
+    plot_single_go(title = "<b>Austrian CO2 emissions by fuels</b>: yearly (incl. projection)",
+                  filename = "AT_timeseries_emissions_fuels_yearly",
+                  unit = "Emissions (Mt<sub>CO2</sub>)",
+                  data_plot = emissions_yearly,
+                  time_res = "yearly",
+                  show_plot = False,
+                  unit_fac= 1, 
+                  source_text = "eurostat & own estimation | data of not fully available years are projected",
+                  plot_type = "line")           
+        
     return consumption 
     
+def plot_emissions_fuels(): 
     
- 
+    data = {"data": {}}
+    
+    for cat in fossil_categories:
+        for f in fossil_categories[cat]:
+            fac = fossils[f]["NCV"]*fossils[f]["em_fac"]/1000
+            
+            ### MONTHLY 
+            data_monthly = filter_eurostat_monthly(name = fossils[f]["file"],
+                                                   code = fossils[f]["code"],
+                                                   options = fossils[f]["options"],
+                                                   unit = fossils[f]["options"]["unit"],
+                                                   movmean = 12)
+            if f in ["Diesel", "Gasoline"]: 
+                data_monthly  = separate_bios(data_monthly, f) 
+                
+            ### rename bio values so that they can be processed 
+            if f in ["Diesel", "Gasoline"]: 
+                data_monthly["data"]["Monthly"] = data_monthly["data"]["%s Monthly" %(f)]
+            
+            ### YEARLY AND EXTRAPOLATION 
+            data_raw = filter_fossil_extrapolation.cut_data_fossil(data_monthly)
+    
+            if cat in data["data"]: 
+                data["data"][cat]["y"] += np.array([data_raw['values_months'][t]*fac for t in
+                      data_raw['values_months']])
+            else: 
+                data["data"][cat] = {"x": [t for t in data_raw['values_months']],
+                                     "y": np.array([data_raw['values_months'][t]*fac for t in
+                                           data_raw['values_months']])}
+       
+        # ### 12 month averaging 
+        # movmean = 12 
+        # values_mean = []
+        # times_mean = []
+        # for t in range(len(data["data"][cat]["x"])-movmean+1):
+        #     values_mean.append(np.mean(data["data"][cat]["y"][t:t+movmean]))
+        #     times_mean.append(data["data"][cat]["x"][t+movmean-1])
+            
+        # data["data"][cat+" (12-Month average)"] = {"x": times_mean,
+        #                                            "y": values_mean}
+        
+        
+    plot_single_go(title = "<b>Austrian CO2 emissions by fuels</b>: monthly",
+                  filename = "AT_timeseries_emissions_fuels_monthly",
+                  unit = "Emissions (Mt<sub>CO2</sub>)",
+                  data_plot = data,
+                  time_res = "monthly",
+                  show_plot = False,
+                  unit_fac= 1, 
+                  source_text = "eurostat & own estimation",
+                  plot_type = "line")
+    
+    return data_raw
 
 def extrapolate_emissions_by_cons(consumption, 
                           year_extrapolate = 2023, 
@@ -343,7 +426,7 @@ def extrapolate_emissions_by_cons(consumption,
     if plot:
         plot_single_go(title = "<b>Austrian GHG emissions</b>: projection",
                       filename = "AT_timeseries_emissions_projection_yearly",
-                      unit = "Emissions (CO2e)",
+                      unit = "Emissions (Mt<sub>CO2e</sub>)",
                       data_plot = data_plot,
                       time_res = "yearly",
                       show_plot = False,
@@ -590,7 +673,9 @@ def plot_emission_estimate_demo():
     
 if __name__ == "__main__":
     extrapolate_fossil_fuels()
-    data = extrapolate_emissions(plot = True)
+    data = extrapolate_emissions(plot = False)
     
     # data = plot_extrapolation_demo()
     # plot_emission_estimate_demo()
+    
+    data = plot_emissions_fuels()

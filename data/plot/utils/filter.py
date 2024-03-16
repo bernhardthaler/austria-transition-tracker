@@ -87,7 +87,12 @@ def filter_eurostat_monthly(name = "meat",
                 data_trim[time] = data_poultry[time]
 
     years_trim = [time for time in data_trim]
-    end_year = int(years_trim[-1].split("-")[0])
+    for time in years_trim: 
+        if sum(data[time]) > 0: 
+            end_year = int(time.split("-")[0])
+            last_month = int(time.split("-")[1])
+
+    # end_year = int(years_trim[-1].split("-")[0])
     
     for time in data_trim: 
         if data_trim[time] > 0: 
@@ -99,11 +104,11 @@ def filter_eurostat_monthly(name = "meat",
                           end = datetime(year = end_year+1, month = 1, day = 1),
                           freq="ME")
     
-    ### find last key with columns 
-    for month in range(1, 13):
-        if "%i-%02i" %(end_year, month) in data: 
-            if sum(data["%i-%02i" %(end_year, month)] > 0):
-                last_month = month 
+    # ### find last key with columns 
+    # for month in range(1, 13):
+    #     if "%i-%02i" %(end_year, month) in data: 
+    #         if sum(data["%i-%02i" %(end_year, month)] > 0):
+    #             last_month = month 
 
     times_plot = []
     values = []

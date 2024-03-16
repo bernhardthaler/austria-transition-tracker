@@ -288,9 +288,9 @@ def plot_single_go(title = "",
         x=1,
         y=-0.06,
         showarrow=False,
-        text=("Chart by B.Thaler | Austria Transition Tracker | "
-            "<a href = \"https://creativecommons.org/licenses/by/4.0/\">CC BY 4.0</a>"
-            "<br>Data source: " +source_text)+info_add,
+        text=("Data source: " +source_text+info_add + "<br>"
+              "Austria Transition Tracker | Chart by B.Thaler | "
+            "<a href = \"https://creativecommons.org/licenses/by/4.0/\">CC BY 4.0</a>"),
         xanchor='right',
         yanchor = "top",
         xref="paper",

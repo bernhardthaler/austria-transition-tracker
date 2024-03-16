@@ -229,5 +229,6 @@ def plot():
 
     
 if __name__ == "__main__": 
+    print("Plotting ...")
     plot()
     
