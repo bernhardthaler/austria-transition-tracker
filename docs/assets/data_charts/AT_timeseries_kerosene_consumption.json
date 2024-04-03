@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_kerosene_consumption",
             "data_source": "eurostat (NRG_CB_OILM)",
             "info": null,
-            "created": "2024-03-13"
+            "created": "2024-04-03"
       },
       "Monthly": {
             "2010-01-31": 53.0,

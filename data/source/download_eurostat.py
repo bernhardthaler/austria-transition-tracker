@@ -45,7 +45,7 @@ def download_and_save(name = "",
     
     times_new = df.keys() 
     for time in times_new: 
-        if time not in times_old and sum(df[time]) > 0: 
+        if time not in times_old and sum(df[time].notnull()) > 0:
             print("New data point: %s" %(time))
     
 if __name__ == "__main__": 
