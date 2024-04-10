@@ -392,16 +392,17 @@ def filter_eurostat_cars(file = "AT_cars_road_eqs_carpda",
                               "../../data_raw/eurostat/%s.xlsx" %(file)))
 
     data_eurostat = data_eurostat.fillna(0)
-    
+        
     ## find range of years in dataframe 
     startyear_found = False 
-    for year in range(1990, 2100):
-        if str(year) in data_eurostat and not startyear_found:
-            start_year = year 
-            startyear_found = True
-        elif str(year) in data_eurostat: 
+    for year in [1990+i for i in range(100)]:
+        if "%i" %(year) in data_eurostat and not startyear_found: 
+            if sum(data_eurostat["%i" %(year)]) > 0:
+                start_year = year
+                startyear_found = True 
+        elif "%i" %(year) in data_eurostat and sum(data_eurostat["%i" %(year)]) > 0:
             end_year = year 
-            
+        
 
     ### filter car data in categories 
     years_eurostat = [start_year+i for i in range(end_year+1-start_year)]
