@@ -77,6 +77,22 @@ permalink: /agriculture/
 
 </div> 
 
+<div class="row">
+ <div class="spacer"></div>
+
+  <div class="column_left">
+    {% include AT_timeseries_meat_consumption_total.html %}
+  </div>
+
+  <div class="spacer"></div>  
+
+  <div class="column_right">
+    {% include AT_timeseries_meat_consumption_per_capita.html %}
+  </div>
+   <div class="spacer"></div>
+
+</div> 
+
 
 <div class="row">
  <div class="spacer"></div>
