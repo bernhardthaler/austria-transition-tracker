@@ -41,6 +41,8 @@ def plot_single_go(title = "",
         hovertemplate = '%{x|%Y}, %{y:.2f}'
     
     fig = go.Figure()
+    plotmin = 0 
+    
     if plot_type == "line": 
         plotmax = 0
         color_ind = 0
@@ -114,6 +116,78 @@ def plot_single_go(title = "",
         plotmax = max(sum_data)*plotmax_fac
     
     
+    elif plot_type == "area_neg": 
+        
+        color_ind = 0
+        sum_data = np.zeros(10)
+        
+        for data in data_plot["data"]:
+            y_data = np.array(data_plot["data"][data]["y"])/unit_fac
+            color = colors[color_ind % len(colors)]
+            color_opacity = color.rstrip(")")+",0.6)"
+            color_opacity = color_opacity.replace("rgb", "rgba")
+            
+            if data == "Total": 
+                fig.add_trace(
+                    go.Scatter(x = data_plot["data"][data]["x"], 
+                                y = np.array(data_plot["data"][data]["y"])/unit_fac,
+                                mode='lines',
+                                name = data,
+                                legendgroup = data,
+                                line = dict(color = "black"),
+                                hovertemplate = hovertemplate))
+            else:
+                y_data = np.array(y_data)
+                y_data_pos = np.zeros(len(y_data))
+                y_data_pos[y_data>0] = y_data[y_data>0]
+                y_data_neg = np.zeros(len(y_data))
+                y_data_neg[y_data<=0] = y_data[y_data<=0]
+
+                showlegendneg = True
+                if sum(y_data_pos) > 0:
+                    showlegendneg = False
+                    fig.add_trace(
+                        go.Scatter(x = data_plot["data"][data]["x"], 
+                                    y = y_data_pos,
+                                    stackgroup = "one",
+                                    line = dict(color = color),
+                                    # fill='tonexty', 
+                                    fillcolor=color_opacity,
+                                    mode='lines',
+                                    name = data,
+                                    legendgroup = data,
+                                    hovertemplate = hovertemplate))
+                    
+                if sum(y_data_neg) < 0: 
+                    fig.add_trace(
+                        go.Scatter(x = data_plot["data"][data]["x"], 
+                                    y = y_data_neg,
+                                    stackgroup = "two",
+                                    line = dict(color = color),
+                                    # fill='tonexty', 
+                                    fillcolor=color_opacity,
+                                    showlegend = showlegendneg,
+                                    name = data,
+                                    mode='lines',
+                                    legendgroup = data,
+                                    hovertemplate = hovertemplate))
+                
+                color_ind += 1
+            
+                if sum(sum_data) == 0: 
+                    sum_data = np.array(y_data_pos)
+                    sum_data_neg = np.array(y_data_neg)
+                else: 
+                    sum_data += np.array(y_data_pos)
+                    sum_data_neg += np.array(y_data_neg)
+
+                
+                
+        plotmax = max(sum_data)*plotmax_fac
+        plotmin = min(sum_data_neg)*plotmax_fac 
+        
+    
+    
     elif plot_type == "area_button": 
         buttondata = []
         len_bals = len(data_plot)
@@ -175,6 +249,7 @@ def plot_single_go(title = "",
                                mode='lines',
                                name = data,
                                customdata = y_data,
+                               legendgroup = data,
                                xhoverformat = "<b>%Y<b>",
                                line = dict(color = "grey"),
                                hovertemplate = hovertemplate))
@@ -200,6 +275,8 @@ def plot_single_go(title = "",
         
         fig.update_layout(hovermode="x unified")
         
+        
+    
     if legend_inside: 
         legend_dict= dict(
             yanchor="bottom",
@@ -233,18 +310,19 @@ def plot_single_go(title = "",
         
         if plotmax_fac == 1: 
             fig.update_layout(
-                yaxis_range=[0, plotmax])
+                yaxis_range=[plotmin, plotmax])
         
         
     else: 
         fig.update_layout(
-            yaxis_range=[0, plotmax])
+            yaxis_range=[plotmin, plotmax])
         title_shift_x = 0
         title_shift_y = 0
         margin_up_shift = 0
         xanchor = "left"
     
-    
+    ### reduce spacing between legend groups 
+    fig.update_layout(legend_tracegroupgap=0)
     
     fig.update_layout(
         yaxis_title= unit,

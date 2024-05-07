@@ -42,7 +42,9 @@ sub_sectors = {"agriculture": ["total", "enteric_fermentation", "manure_manageme
                "energy_construction_stationary": ["co2", "ch4", "n2o", "tot"],
                "buildings_commercial": ["co2", "ch4", "n2o", "tot"],
                "buildings_residential": ["co2", "ch4", "n2o", "tot"],
-               "buildings_fuel_shares": ["Oil-heaters", "Coal-heaters", "Gas-heaters", "Other"]}
+               "buildings_fuel_shares": ["Oil-heaters", "Coal-heaters", "Gas-heaters", "Other"],
+               "lulucf": ["total", "forest_land", "crop_land", "grass_land", "wet_lands", "settlements", "other_land", "harvested_wood_products", "ch4", "n2o"],
+               }
 
 
 def filter_file(name = "agriculture"): 
@@ -182,7 +184,14 @@ def filt(sector = "Agriculture"):
         data_out_names = {fuel: fuel for fuel in data_raw}
             
             
-        
+    elif sector == "LULUCF": 
+        data,years = filter_file(name = "lulucf")
+        data_out_names = {"Forests": "forest_land",
+                          "Crop land": "crop_land",
+                          "Grass land": "grass_land",
+                          "Wet land": "wet_lands",
+                         "Settlements": "settlements",
+                          "Wood products": "harvested_wood_products"}
 
     times = pd.date_range(
         start = datetime(year = years[0], month = 1, day = 1),
@@ -199,32 +208,79 @@ def filt(sector = "Agriculture"):
     for sub_sector in data: 
         if sub_sector not in [data_out_names[name] for name in data_out_names] and sub_sector != "total":
             data_out["data"]["Other"]["y"] += np.array(data[sub_sector])/1000
-            
+            # print(data_out["data"]["Other"]["y"])
          
     sum_sectors = np.zeros(len(times))
     for sub_sector in data_out["data"]:
         sum_sectors += np.array(data_out["data"][sub_sector]["y"])
         
-    uba_emissions = filter_uba_sectoral_emisssions()
-    # statistical_difference = np.zeros(len(sum_sectors))
-    statistical_difference = np.array(uba_emissions["data"][sector]["y"][:-1]) - sum_sectors
-    data_out["data"]["Other"]["y"] += np.array(statistical_difference)
+    if sector not in ["LULUCF"]:
+        uba_emissions = filter_uba_sectoral_emisssions()
+        # statistical_difference = np.zeros(len(sum_sectors))
+        statistical_difference = np.array(uba_emissions["data"][sector]["y"][:-1]) - sum_sectors
+        data_out["data"]["Other"]["y"] += np.array(statistical_difference)
     
-    ### extend sectoral data 
-    if uba_emissions["data"][sector]["x"][-1] not in data_out["data"]["Other"]["x"]:
-        for sub_sector in data_out["data"]: 
-            data_out["data"][sub_sector]["x"] = uba_emissions["data"][sector]["x"]
-            sector_emissions = uba_emissions["data"][sector]["y"][-1] * (
-                data_out["data"][sub_sector]["y"][-1]/(sum_sectors[-1]+statistical_difference[-1]))
-            data_out["data"][sub_sector]["y"] = np.append(data_out["data"][sub_sector]["y"], sector_emissions)
-    
-    data_out["data"]["Total"] = uba_emissions["data"][sector]
+        ### extend sectoral data 
+        if uba_emissions["data"][sector]["x"][-1] not in data_out["data"]["Other"]["x"]:
+            for sub_sector in data_out["data"]: 
+                data_out["data"][sub_sector]["x"] = uba_emissions["data"][sector]["x"]
+                sector_emissions = uba_emissions["data"][sector]["y"][-1] * (
+                    data_out["data"][sub_sector]["y"][-1]/(sum_sectors[-1]+statistical_difference[-1]))
+                data_out["data"][sub_sector]["y"] = np.append(data_out["data"][sub_sector]["y"], sector_emissions)
         
+        data_out["data"]["Total"] = uba_emissions["data"][sector]
+    else: 
+        data_out["data"]["Total"] = {"x": data_out["data"][sub_sector]["x"],
+                                     "y": sum_sectors}
+
     return data_out
 
 
+
+def get_land_uses():
+    cat_names = {"forest_land": "Forests",
+                 "settlements": "Settlements",
+                 "crop_land": "Crop land",
+                 "grass_land": "Grass land",
+                 "wet_land": "Wet land",
+                 "other": "Other"
+                 }
+    
+    data = {}
+    for cat in cat_names:
+        filepath  = "../../data_raw/national_inventory_report/lulucf_%s.txt" %(cat)
+        fp = open(os.path.join(os.path.dirname(__file__), filepath), "r")
+        lines = fp.readlines()
+        
+        years = []
+        data_cat = []
+        for line in lines: 
+            splits = line.split(" ")
+            years.append(int(splits[0]))
+            if cat == "forest_land": 
+                data_cat.append(int(splits[1])*1000) #given in kHa 
+            else: 
+                data_cat.append(int(splits[1])) #given in Ha
+            
+        data[cat] = {"years": years, "data": data_cat}
+        
+        
+    times = pd.date_range(
+        start = datetime(year = years[0], month = 1, day = 1),
+        end = datetime(year = years[-1], month = 1, day = 1),
+        freq="YS")
+    
+    data_out= {"data": {}}
+    for cat in cat_names: 
+        data_out["data"][cat_names[cat]] = {"x": times,
+                                  "y": np.array(data[cat]["data"])/1000}  #kHa
+
+    return data_out 
+
+
+
 if __name__ == "__main__": 
-    data = filt(sector = "Agriculture")
+    data = filt(sector = "LULUCF")
         
         
             

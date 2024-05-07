@@ -28,6 +28,10 @@ car_categories = {"Diesel": ["Diesel (excluding hybrids) [DIE_X_HYB]"],
                         "Other [OTH]"]}
 
 
+months = {"Jaenner": 1, "Februar": 2, "Maerz": 3, "April": 4,
+          "Mai": 5, "Juni": 6, "Juli": 7, "August": 8,
+          "September": 9, "Oktober": 10, "November": 11, "Dezember": 12}
+
 def pandas_to_dict(data, options, unit): 
     data_filtered = data[(data["unit"] == unit)]
     for option in options: 
@@ -185,9 +189,7 @@ def filter_car_registrations():
     
     ### 2nd step, add Statistik Austria data   
     years = [2019, 2020, 2021, 2022, 2023, 2024, 2025]
-    months = {"Jaenner": 1, "Februar": 2, "Maerz": 3, "April": 4,
-              "Mai": 5, "Juni": 6, "Juli": 7, "August": 8,
-              "September": 9, "Oktober": 10, "November": 11, "Dezember": 12}
+
     
     labels = {"Total": "Pkw insgesamt", 
               "Gasoline": "Benzin", 
@@ -298,7 +300,40 @@ def filter_eurostat_yearly(name = "meat",
                 }
     return data_out
 
+def filter_railways():
+    data_total = filter_eurostat_yearly(name = "rail_tracks", code = "rail_if_line_tr",
+                                  options = {"tra_infr":"Total [TOTAL]",
+                                             "n_tracks": "Total [TOTAL]"},
+                                  unit = "KM", start_year = 1900)
+    data_electr = filter_eurostat_yearly(name = "rail_tracks", code = "rail_if_line_tr",
+                                  options = {"tra_infr":"Electrified railway lines [RL_ELC]",
+                                             "n_tracks": "Total [TOTAL]"},
+                                  unit = "KM", start_year = 1990)
+    data_non_electr = filter_eurostat_yearly(name = "rail_tracks", code = "rail_if_line_tr",
+                                  options = {"tra_infr":"Non-electrified railway lines [RL_NELC]",
+                                             "n_tracks": "Total [TOTAL]"},
+                                  unit = "KM", start_year = 1990)
+    names = {"Electrified": data_electr,
+             "Non-electrified": data_non_electr,
+             "Total": data_total}
+    
+    data_out = {"data": {name: {} for name in names}}
+    for name in names: 
+        x = names[name]["data"]["rail_tracks"]["x"]
+        y = names[name]["data"]["rail_tracks"]["y"]
+        data_out["data"][name]["x"] = x 
+        data_out["data"][name]["y"] = y 
 
+    data_rel = {"data": {"Electrified": {"x": data_out["data"]["Electrified"]["x"],
+                                         "y": np.array(data_out["data"]["Electrified"]["y"])/np.array(data_out["data"]["Total"]["y"])
+                                         },
+                         "Non-electrified": {"x": data_out["data"]["Non-electrified"]["x"],
+                                            "y": np.array(data_out["data"]["Non-electrified"]["y"])/np.array(data_out["data"]["Total"]["y"])
+                                            },
+                         }
+                }
+    
+    return data_out, data_rel
 
 
 def filter_eurostat_monnthly_to_yearly(name = "oil",
@@ -384,6 +419,24 @@ def filter_eurostat_monnthly_to_yearly(name = "oil",
     return data_out
 
 
+def extend_car_registr(data_out, filepath, year, skiprows = 2,
+                       tot = "Personenkraftwagen Kl. M1 insgesamt", sheet_name = "tab_1" ): 
+    data_ext =  pd.read_excel(filepath, decimal = ",", skiprows = skiprows, sheet_name = sheet_name)
+    number = np.array(data_ext.iloc[:, [1]])
+    column = np.array(data_ext.iloc[:, [0]])
+    time_ext = datetime(year = year, month = 1, day = 1)
+    data_out["Total"][time_ext] = float(number[column == tot][0])
+    data_out["Diesel"][time_ext] = float(number[column == "Diesel"][0])
+    data_out["Gasoline"][time_ext] = float(number[column == "Benzin inkl. Flex-Fuel"][0])
+    data_out["Hybrid"][time_ext] = (float(number[column == "Benzin/Elektro (hybrid)"][0])+
+                                float(number[column == "Diesel/Elektro (hybrid)"][0]))
+    data_out["Electric"][time_ext] = float(number[column == "Elektro"][0])
+    data_out["Other"][time_ext] = data_out["Total"][time_ext]-sum(
+        [data_out[cat][time_ext] for cat in ["Diesel", "Gasoline", "Hybrid", "Electric"]])
+    data_out["Hybrid plugin"][time_ext] = 0 
+    
+    return data_out
+
 
 def filter_eurostat_cars(file = "AT_cars_road_eqs_carpda",
                          options = {}): 
@@ -430,6 +483,47 @@ def filter_eurostat_cars(file = "AT_cars_road_eqs_carpda",
     data_total = {time: sum([data_out[cat][time] for cat in car_categories]) for 
                   time in times_eurostat}
     data_out["Total"] = data_total  
+    
+    ### for pkw, extend data with more up to date statistik austria data 
+    if file == "AT_cars_road_eqs_carpda":
+        
+        filepath = os.path.join(os.path.dirname(__file__), 
+                                "../../data_raw/statistik_austria/kfz-bestand_2023.xlsx")
+        data_before = pd.read_excel(filepath, decimal = ",", skiprows = 1, sheet_name = "tab_2", skipfooter = 1)
+        data_before = data_before.replace("-", 0).infer_objects(copy=False)
+        years_before = [int(1995+i) for i in range(2013-1995)]
+        data_out_2 = {cat: {} for cat in data_out}
+        data_years = data_before["Jahr1"].astype(int)
+        for year in years_before: 
+            time = datetime(year = year, month = 1, day = 1)
+            data_out_2["Total"][time] = float(data_before["Pkw"][data_years==year].iloc[0])
+            data_out_2["Diesel"][time] = float(data_before["Diesel"][data_years==year].iloc[0])
+            data_out_2["Gasoline"][time] = float(data_before["Benzin2"][data_years==year].iloc[0])
+            data_out_2["Electric"][time] =  float(data_before["Elektro"][data_years==year].iloc[0])
+            data_out_2["Other"][time] =  float(data_before["Sonstige Pkw3"][data_years==year].iloc[0])
+            data_out_2["Hybrid plugin"][time] = 0 
+            data_out_2["Hybrid"][time] = 0
+        for time_i in data_out["Total"]: 
+            for cat in data_out: 
+                data_out_2[cat][time_i] = data_out[cat][time_i]
+        
+        data_out = data_out_2 
+        
+        last_year = 2023 
+        if years_eurostat[-1] < last_year: 
+            
+            data_out = extend_car_registr(data_out, filepath, last_year, skiprows = 2, sheet_name = "tab_1")
+            file_found = False 
+            for month in reversed(months):   
+                filepath = os.path.join(os.path.dirname(__file__), 
+                                        "../../data_raw/statistik_austria/BestandFahrzeuge%s%iVorlaeufigeDaten.xlsx" %(month, last_year+1))
+                if os.path.exists(filepath) and not file_found:
+                    file_found = True 
+                    month_found = months[month] 
+                    data_out = extend_car_registr(data_out, filepath, last_year+1, skiprows = 1,
+                                                  tot = "Pkw insgesamt", sheet_name = "Pkw")
+                    
+            return data_out, month_found, last_year 
     
     return data_out 
     

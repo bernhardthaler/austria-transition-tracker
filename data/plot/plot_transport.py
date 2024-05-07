@@ -13,6 +13,7 @@ from plot_single import plot_single_go
 from utils.filter import filter_eurostat_monthly
 from utils.filter import filter_car_registrations
 from utils.filter import filter_eurostat_cars
+from utils.filter import filter_railways 
 from utils import filter_national_inventory
 
 set2 = px.colors.qualitative.Dark2
@@ -29,18 +30,18 @@ def get_car_vectors(data):
     data_abs = {"data": {}}
 
     for cat in ["Electric", "Hybrid plugin", "Hybrid", "Diesel", "Gasoline", "Other"]: 
-        if cat != "Total": 
-            data_rel["data"][cat] = {"x": list(data[cat].keys()),
-                             "y": list(data[cat][time]*100/data["Total"][time] for time in data[cat])}
-            data_abs["data"][cat] = {"x": list(data[cat].keys()),
-                             "y": list(data[cat][time] for time in data[cat])}
+        data_rel["data"][cat] = {"x": list(data[cat].keys()),
+                         "y": list(data[cat][time]*100/data["Total"][time] for time in data[cat])}
+        data_abs["data"][cat] = {"x": list(data[cat].keys()),
+                         "y": list(data[cat][time] for time in data[cat])}
+    data_abs["data"]["Total"] = {"x": list(data[cat].keys()),
+                     "y": list(data["Total"][time] for time in data[cat])}
             
     return data_rel, data_abs 
     
 
 
 def plot():
-
     ### Road petroleum products 
     data_gasoline = filter_eurostat_monthly(name = "oil",
                                       code = "NRG_CB_OILM",
@@ -148,9 +149,14 @@ def plot():
                   plot_type = "area")
     
     
-    # ### Car stock data 
-    data = filter_eurostat_cars(file = "AT_cars_road_eqs_carpda")
+    ### Car stock data 
+    data, month, last_year = filter_eurostat_cars(file = "AT_cars_road_eqs_carpda")
     data_rel, data_abs = get_car_vectors(data) 
+    
+    info_text = ("Data of %i until %i/%i,"
+                 " Hybrids of %i/%i indclude also Plugin-Hybrids," 
+                 " Others before 2013 include also Hybrids" %(last_year+1,month,last_year+1,last_year,last_year+1))
+
     
     plot_single_go(title = "<b>Fuel type share</b>: registered cars",
                   filename = "AT_timeseries_share_fuel_stock_cars",
@@ -158,8 +164,10 @@ def plot():
                   data_plot = data_rel,
                   time_res = "yearly",
                   show_plot = False,
+                  legend_inside = False,
                   colors = list([colors_cars[label] for label in colors_cars]),
-                  source_text = "eurostat (road_eqs_carpda)",
+                  source_text = "eurostat (road_eqs_carpda) and Statistik Austria",
+                  info_text = info_text,
                   plot_type = "area",
                   plotmax_fac = 1)
         
@@ -169,8 +177,10 @@ def plot():
                   data_plot = data_abs,
                   time_res = "yearly",
                   show_plot = False,
+                  legend_inside = False,
                   colors = list([colors_cars[label] for label in colors_cars]),
-                  source_text = "eurostat (road_eqs_carpda)",
+                  source_text = "eurostat (road_eqs_carpda) and Statistik Austria",
+                  info_text = info_text, 
                   plot_type = "area")
     
     
@@ -202,7 +212,7 @@ def plot():
     
 
     data = filter_eurostat_cars(file = "AT_lorries_road_eqr_lormot",
-                                options = {"vehicle": "VG_GT3P5"})
+                                options = {"vehicle": "LOR_GT3P5"})
     data_rel, data_abs = get_car_vectors(data) 
     
     plot_single_go(title = "<b>Fuel type share</b>: new lorry (>3.5t) registrations",
@@ -225,6 +235,29 @@ def plot():
               colors = list([colors_cars[label] for label in colors_cars]),
               source_text = "eurostat (road_eqr_lormot)",
               plot_type = "area")   
+    
+
+    ### railway network 
+    data_abs, data_rel = filter_railways()
+    
+    plot_single_go(title = "<b>Rail track lengths</b>: absolute length",
+              filename = "AT_timeseries_rail_tracks_abs",
+              unit = "Length (km)", 
+              data_plot = data_abs,
+              time_res = "yearly",
+              show_plot = False,
+              source_text = "eurostat (rail_if_line_tr) & Statistik Austria",
+              plot_type = "area")   
+    
+    plot_single_go(title = "<b>Rail track lengths</b>: shares electrified/non-electrified",
+              filename = "AT_timeseries_rail_tracks_rel",
+              unit = "Share (%)", 
+              data_plot = data_rel,
+              time_res = "yearly",
+              show_plot = False,
+              source_text = "eurostat (rail_if_line_tr) & Statistik Austria",
+              plot_type = "area",
+              plotmax_fac = 1)  
     
 
     

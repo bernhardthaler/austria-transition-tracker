@@ -7,6 +7,7 @@ Created on Sun Jan 21 17:10:55 2024
 
 import eurostat 
 import pandas as pd 
+import os 
 
 def download_and_save(name = "",
                       code = "",
@@ -17,8 +18,13 @@ def download_and_save(name = "",
     print("Downloading data %s ..." %(name))
     
     ### load already present data 
-    df_old = pd.read_excel("../data_raw/eurostat/%s_%s_%s.xlsx" %(geo[0], name, code))
-    times_old = df_old.keys()
+    filepath = "../data_raw/eurostat/%s_%s_%s.xlsx" %(geo[0], name, code)
+    if os.path.exists(filepath): 
+        df_old = pd.read_excel(filepath)
+        times_old = df_old.keys()
+    else:
+        times_old = []
+        
     # print(times)
     
     my_filter_pars = {'startPeriod': start_period, 
@@ -142,6 +148,11 @@ if __name__ == "__main__":
     download_and_save(name = "electricity_fuel_type", 
                       code = "nrg_cb_pem",
                       options = ["siec"])       
+    
+    ### rail network 
+    download_and_save(name = "rail_tracks", 
+                      code = "rail_if_line_tr",
+                      options = ["tra_infr"]) 
         
 
      

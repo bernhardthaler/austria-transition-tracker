@@ -41,14 +41,27 @@ def plot():
                 "Waste":  {"file": "waste"},
                 "Transport":  {"file": "transport"}, 
                 "Fluorinated Gases": {"file": "fluorinated_gases"}, 
+                "LULUCF": {"file": "lulucf"}
                 }
     
-    
+    # sectors = {
+    #             "LULUCF": {"file": "lulucf"},
+
+    #             }
     
     for sector in sectors: 
         ### emissions with sub-sectors 
         data_emissions = filter_national_inventory.filt(sector =  sector)
         
+        if sector in ["LULUCF"]:
+            source_text = "Austria NIR 2023"
+            info_text = ""
+            plot_type = "area_neg"
+        else: 
+            source_text = "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated"
+            info_text =  "<Other> data scaled to match total emissions from UBA dashboard"
+            plot_type = "area" 
+
         plot_single_go(title = "<b>%s GHG emissions</b> by sub-sectors" %(sector),
                       filename = "AT_timeseries_"+sectors[sector]["file"]+"_emissions_sectors",
                       unit = "Emissions (Mt<sub>CO2e</sub>)", 
@@ -56,9 +69,9 @@ def plot():
                       time_res = "yearly",
                       show_plot = False,
                       legend_inside = False,
-                      source_text = "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated",
-                      info_text = "<Other> data scaled to match total emissions from UBA dashboard",
-                      plot_type = "area",
+                      source_text = source_text,
+                      info_text = info_text,
+                      plot_type = plot_type,
                       plotmax_fac = 1.1)
         
         
