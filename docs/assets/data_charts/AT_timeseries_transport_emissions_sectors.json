@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_transport_emissions_sectors",
             "data_source": "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated",
             "info": "<Other> data scaled to match total emissions from UBA dashboard",
-            "created": "2024-05-03"
+            "created": "2024-06-09"
       },
       "Passenger cars: fuel inland": {
             "1990-01-01": 8.505,

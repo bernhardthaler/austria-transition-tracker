@@ -96,6 +96,8 @@ fossils = {"Natural gas": {"file": "gas",
                          "em_fac": 94.6},
             }
 
+units_plot = {"THS_T": "1000 tons",
+              "TJ_GCV": "TJ<sub>GCV</sub>"}
 
 # fossils = {"Natural gas": {"file": "gas",
 #                             "save_name": "natural_gas",
@@ -172,13 +174,13 @@ def extrapolate_fossil_fuels(plot = True):
             legend_inside = False 
             data_monthly  = separate_bios(data_monthly, f) 
 
-        if plot: 
-            plot_single_go(title = "<b>%s</b>: monthly consumption" %(f), 
-                            filename = "AT_timeseries_consumption_%s_monthly" %(fossils[f]["save_name"]),
-                            unit =  "Consumption (%s)" %(fossils[f]["options"]["unit"]),
-                            data_plot=data_monthly, 
-                            unit_fac = 1,
-                            legend_inside = legend_inside)
+        plot_single_go(title = "<b>%s</b>: monthly consumption" %(f), 
+                        filename = "AT_timeseries_consumption_%s_monthly" %(fossils[f]["save_name"]),
+                        unit =  "Consumption (%s)" %(units_plot[fossils[f]["options"]["unit"]]),
+                        data_plot=data_monthly, 
+                        unit_fac = 1,
+                        show_plot = plot,
+                        legend_inside = legend_inside)
         
         ### rename bio values so that they can be processed 
         if f in ["Diesel", "Gasoline"]: 
@@ -231,18 +233,17 @@ def extrapolate_fossil_fuels(plot = True):
         data["data"]["Total"] = {"x": times_years,
                                  "y": yearly_consumptions}
         
-        if plot: 
-            plot_single_go(title = "<b>%s</b>: yearly consumption" %(f),
-                          filename = "AT_timeseries_consumption_%s_yearly" %(fossils[f]["save_name"]),
-                          unit = "Consumption (%s)" %(fossils[f]["options"]["unit"]),
-                          data_plot = data,
-                          time_res = "yearly",
-                          colors = colors_plot,
-                          show_plot = False,
-                          unit_fac= 1, 
-                          source_text = "eurostat (%s)" %(fossils[f]["code"]),
-                          info_text = "Extrapolations based on monthly available data scaled with past trends",
-                          plot_type = "bar")
+        plot_single_go(title = "<b>%s</b>: yearly consumption" %(f),
+                      filename = "AT_timeseries_consumption_%s_yearly" %(fossils[f]["save_name"]),
+                      unit = "Consumption (%s)" %(units_plot[fossils[f]["options"]["unit"]]),
+                      data_plot = data,
+                      time_res = "yearly",
+                      colors = colors_plot,
+                      show_plot = plot,
+                      unit_fac= 1, 
+                      source_text = "eurostat (%s)" %(fossils[f]["code"]),
+                      info_text = "Extrapolations based on monthly available data scaled with past trends",
+                      plot_type = "bar")
     
         consumption[f] = {"data": {times_years[t]: yearly_consumptions[t] for t in range(len(times_years))},
                           "fac_mean": data_extrapolated["fac_mean"],
@@ -264,7 +265,7 @@ def extrapolate_fossil_fuels(plot = True):
                   unit = "Emissions (Mt<sub>CO2</sub>)",
                   data_plot = emissions_yearly,
                   time_res = "yearly",
-                  show_plot = False,
+                  show_plot = plot,
                   unit_fac= 1, 
                   source_text = "eurostat & own estimation | data of not fully available years are projected",
                   plot_type = "line")           
@@ -328,7 +329,7 @@ def plot_emissions_fuels():
     return data_raw
 
 def extrapolate_emissions_by_cons(consumption, 
-                          year_extrapolate = 2023, 
+                          years_extrapolate = [2023,2024], 
                           train_start = 2008,
                           train_end = 2022,
                           plot = False): 
@@ -365,27 +366,39 @@ def extrapolate_emissions_by_cons(consumption,
     fac_mean = np.mean(np.array(facs))
     std_estimator = np.sqrt(np.var(facs)*len(facs)/(len(facs)-1.5))
     
-    ### ESTIMATE EMISSIONS AND EXTRAPOLATE 
-    emissions_energy_model = 0
-    time_project = datetime(year = year_extrapolate, month= 1, day=1)
-    for f in fossils: 
-        emissions_energy_model += consumption[f]["data"][time_project]*fossils[f]["NCV"]*fossils[f]["em_fac"]/1000
-    emissions_energy_projected = emissions_energy_model*fac_mean
+    ### ESTIMATE EMISSIONS AND EXTRAPOLATE     
+    times_projected = pd.date_range(start = datetime(year = years_extrapolate[0], month = 1, day =1),
+                          end = datetime(year = years_extrapolate[-1], month = 1, day = 1),
+                          freq="YS")
+    emissions_energy_model = [0 for i in range(len(times_projected))]
+    emissions_energy_projected = []
+    std_emission_projected = []
+    std_consumption_projected = [0 for i in range(len(times_projected))]
+    total_std = []
     
-    ### ESTIMATE STD (BOTH CONTRIBUTIONS)
-    std_emisssion_projected =  emissions_energy_projected*std_estimator
+    for i in range(len(times_projected)):
+        time_project = times_projected[i]
+        
+        ### project energy emissions by projected consumption 
+        for f in fossils: 
+            emissions_energy_model[i] += consumption[f]["data"][time_project]*fossils[f]["NCV"]*fossils[f]["em_fac"]/1000
+        emissions_energy_projected.append(emissions_energy_model[i]*fac_mean)
     
-    std_consumption_projected = 0
-    for f in consumption: 
-        ### in case no projection was made to projection year, set error to zero (full data available)
-        time_project_plus_one = datetime(year = year_extrapolate+1, month= 1, day=1)
-        if time_project_plus_one in consumption[f]["data"]:
-            pass 
-        else:
-            std_consumption_projected += (consumption[f]["std_energy"]*fossils[f]["NCV"]*fossils[f]["em_fac"]/1000 
-                                     * fac_mean)
+        ### estimate std of projection (energy-based to total emissions)
+        std_emission_projected.append(emissions_energy_projected[i]*std_estimator)
+    
+        ### estimated std of extrapolation 
+        for f in consumption: 
+            ### in case no projection was made to projection year, set error to zero (full data available)
+            time_project_plus_one = datetime(year = years_extrapolate[i]+1, month= 1, day=1)
+            if time_project_plus_one in consumption[f]["data"]:
+                pass 
+            else:
+                std_consumption_projected[i] += (consumption[f]["std_energy"]*fossils[f]["NCV"]*fossils[f]["em_fac"]/1000 
+                                         * fac_mean)
             
-    total_std = std_emisssion_projected + std_consumption_projected 
+        total_std.append(std_emission_projected[i] + std_consumption_projected[i])
+    
     
     ### for agriculture, fluorinated gases and waste, extrapolate current emission trends 
     emissions_rest_years = (np.array(emissions_real["data"]["Agriculture"]["y"]) + 
@@ -401,26 +414,30 @@ def extrapolate_emissions_by_cons(consumption,
     ind_last = times_historic.index(times_train[-1])
     
     emission_rest_trend_year = (emissions_rest_years[ind_last]-emissions_rest_years[ind_last-3])/3    
-    emissions_rest_projected = emissions_rest_years[ind_last] + emission_rest_trend_year
+    
+    emissions_rest_projected = []
+    projected_emissions = [emissions_historic[ind]]
+    times_projected_plot = [times_historic[ind]]
+    for i in range(len(times_projected)):
+        emissions_rest_projected.append(emissions_rest_years[ind_last] + (i+1)*emission_rest_trend_year)
+        projected_emissions.append(emissions_energy_projected[i] + emissions_rest_projected[i])
+        times_projected_plot.append(times_projected[i])
 
-    projected_emissions = [emissions_historic[ind], emissions_energy_projected+emissions_rest_projected]
-    times_projected = [times_historic[ind],time_project]
-
-    times_total = times_historic + [time_project]
-    emissions_energy_sectors = list(emissions_energy_years) + [emissions_energy_projected]
-    emissions_rest_sectors = list(emissions_rest_years) + [emissions_rest_projected]
+    times_total = times_historic + times_projected_plot[1:]
+    emissions_energy_sectors = list(emissions_energy_years) + emissions_energy_projected
+    emissions_rest_sectors = list(emissions_rest_years) + emissions_rest_projected
     
     data_plot = {"data": {"Energy sectors": {"x": times_total,
                                               "y": emissions_energy_sectors},
                           "Other sectors": {"x": times_total,
                                             "y": emissions_rest_sectors},
-                          "Projeted emissions": {"x": times_projected,
+                          "Projeted emissions": {"x": times_projected_plot,
                                                  "y": projected_emissions},
                           "Historic emissions": {"x": times_historic,
                                                  "y": emissions_historic}
                           }}
     
-    data_plot["meta"] = {"uncertainty": {"Projeted emissions": [0, total_std]},
+    data_plot["meta"] = {"uncertainty": {"Projeted emissions": [0] + total_std},
                          "areas": ["Energy sectors", "Other sectors"]}
     
     if plot:
@@ -429,13 +446,13 @@ def extrapolate_emissions_by_cons(consumption,
                       unit = "Emissions (Mt<sub>CO2e</sub>)",
                       data_plot = data_plot,
                       time_res = "yearly",
-                      show_plot = False,
+                      show_plot = plot,
                       unit_fac= 1, 
                       source_text = "Umweltbundesamt, eurostat & own projection",
                       plot_type = "line")
     
     data_out = {"emissions_energy_projected": emissions_energy_projected,
-                "std_emission_projected": std_emisssion_projected,
+                "std_emission_projected": std_emission_projected,
                 "std_consumption_projected": std_consumption_projected,
                 "emissions_rest_projected": emissions_rest_projected}
     
@@ -672,10 +689,10 @@ def plot_emission_estimate_demo():
 
     
 if __name__ == "__main__":
-    extrapolate_fossil_fuels()
-    data = extrapolate_emissions(plot = False)
+    # extrapolate_fossil_fuels()
+    data = extrapolate_emissions(plot = True)
     
     # data = plot_extrapolation_demo()
     # plot_emission_estimate_demo()
     
-    data = plot_emissions_fuels()
+    # data = plot_emissions_fuels()

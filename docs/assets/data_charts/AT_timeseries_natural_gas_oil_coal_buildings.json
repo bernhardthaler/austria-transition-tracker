@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_natural_gas_oil_coal_buildings",
             "data_source": "Source: eurostat (nrg_bal_c)",
             "info": null,
-            "created": "2024-05-01"
+            "created": "2024-06-09"
       },
       "Natural gas": {
             "1990-01-01": 11.122,

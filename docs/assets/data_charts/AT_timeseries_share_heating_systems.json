@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_share_heating_systems",
             "data_source": "Source: Statistik Austria",
             "info": null,
-            "created": "2024-05-01"
+            "created": "2024-06-09"
       },
       "Heat pumps / solar": {
             "2003-01-01": 0.030694351489165786,
