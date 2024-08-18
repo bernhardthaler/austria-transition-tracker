@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_fluorinated_gases_emissions_sectors",
             "data_source": "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated",
             "info": "<Other> data scaled to match total emissions from UBA dashboard",
-            "created": "2024-06-09"
+            "created": "2024-08-18"
       },
       "Stationary AC and refrigeration": {
             "1990-01-01": 0.0,
