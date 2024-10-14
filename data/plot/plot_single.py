@@ -49,6 +49,11 @@ def plot_single_go(title = "",
         for data in data_plot["data"]:
             y_data = np.array(data_plot["data"][data]["y"])/unit_fac
             
+            if data == "Total": 
+                color = "black"
+            else: 
+                color = colors[color_ind % len(colors)]
+            
             error_y = dict()
             stackgroup = None
             
@@ -71,7 +76,7 @@ def plot_single_go(title = "",
                            stackgroup = stackgroup,
                            name = data,
                            error_y = error_y,
-                           line = dict(color = colors[color_ind % 7]),
+                           line = dict(color = color),
                            hovertemplate = hovertemplate)
                 )
             color_ind += 1

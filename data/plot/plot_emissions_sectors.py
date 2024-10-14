@@ -15,20 +15,25 @@ from utils.filter import filter_uba_sectoral_emisssions
 from utils.filter import filter_uba_emissions
 
 
-def plot(): 
+def plot(show_plot=True): 
     
     ### Emissions total 
     data_total = filter_uba_emissions()
     emissions = filter_uba_sectoral_emisssions()
+        
+    data_total = np.zeros(len(emissions["data"]["Buildings"]["x"]))
+    for sector in emissions["data"]: 
+        data_total += np.array(emissions["data"][sector]["y"])
+    emissions["data"]["Total"] = {"x": emissions["data"]["Buildings"]["x"],
+                                  "y": np.array(data_total)}
     
-    emissions["data"]["Total"] = data_total["data"]["GHG emissions total"]
     
     plot_single_go(title = "<b>Austrian GHG emissions</b> by sectors",
                   filename = "AT_timeseries_co2_emissions_sectors",
                   unit = "Emissions (Mt<sub>CO2e</sub>)", 
                   data_plot = emissions,
                   time_res = "yearly",
-                  show_plot = False,
+                  show_plot = show_plot,
                   source_text = "Umweltbundesamt (Klimadashboard)",
                   plot_type = "area",
                   plotmax_fac = 1.1)
@@ -67,7 +72,7 @@ def plot():
                       unit = "Emissions (Mt<sub>CO2e</sub>)", 
                       data_plot = data_emissions,
                       time_res = "yearly",
-                      show_plot = False,
+                      show_plot = show_plot,
                       legend_inside = False,
                       source_text = source_text,
                       info_text = info_text,
@@ -159,7 +164,7 @@ def plot():
                       unit = "Share [%]", 
                       data_plot = data_all_rel_plot,
                       time_res = "yearly",
-                      show_plot = False,
+                      show_plot = show_plot,
                       colors = list([colors_siecs[label] for label in colors_siecs]),
                       source_text = "eurostat energy balances (nrg_bal_c)",
                       plot_type = "area_button",
@@ -170,7 +175,7 @@ def plot():
                       unit = "Energy (TWh)", 
                       data_plot = data_all_abs_plot,
                       time_res = "yearly",
-                      show_plot = False,
+                      show_plot = show_plot,
                       colors = list([colors_siecs[label] for label in colors_siecs]),
                       source_text = "eurostat energy balances (nrg_bal_c)",
                       plot_type = "area_button")
@@ -179,4 +184,5 @@ def plot():
     return data_all_abs_plot
     
 if __name__ == "__main__": 
+    print("Plotting ...")
     data = plot()

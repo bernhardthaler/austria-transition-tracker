@@ -203,7 +203,6 @@ def filter_car_registrations():
             filename = "NeuzulassungenFahrzeugeJaennerBis%s%i" %(month, year)
             filepath = os.path.join(os.path.dirname(__file__), 
                 "../../data_raw/statistik_austria/%s.xlsx" %(filename))
-            
             if os.path.exists(filepath) and not file_found:
                 file_found = True 
                 month_list = list(months.keys())
@@ -509,21 +508,25 @@ def filter_eurostat_cars(file = "AT_cars_road_eqs_carpda",
         
         data_out = data_out_2 
         
-        last_year = 2023 
-        if years_eurostat[-1] < last_year: 
-            
-            data_out = extend_car_registr(data_out, filepath, last_year, skiprows = 2, sheet_name = "tab_1")
-            file_found = False 
-            for month in reversed(months):   
-                filepath = os.path.join(os.path.dirname(__file__), 
-                                        "../../data_raw/statistik_austria/BestandFahrzeuge%s%iVorlaeufigeDaten.xlsx" %(month, last_year+1))
-                if os.path.exists(filepath) and not file_found:
-                    file_found = True 
-                    month_found = months[month] 
-                    data_out = extend_car_registr(data_out, filepath, last_year+1, skiprows = 1,
-                                                  tot = "Pkw insgesamt", sheet_name = "Pkw")
-                    
-            return data_out, month_found, last_year 
+        ### get newest monthly data 
+        this_year = datetime.today().year
+        
+        ### in case this year -1 is not present in eurostat 
+        if years_eurostat[-1] < this_year-1: 
+            data_out = extend_car_registr(data_out, filepath, this_year-1, skiprows = 2, sheet_name = "tab_1")            
+        
+        ### extend with  this-year's monthly data 
+        file_found = False 
+        for month in reversed(months):   
+            filepath = os.path.join(os.path.dirname(__file__), 
+                                    "../../data_raw/statistik_austria/BestandFahrzeuge%s%iVorlaeufigeDaten.xlsx" %(month, this_year))
+            if os.path.exists(filepath) and not file_found:
+                file_found = True 
+                month_found = months[month] 
+                data_out = extend_car_registr(data_out, filepath, this_year, skiprows = 1,
+                                              tot = "Pkw insgesamt", sheet_name = "Pkw")
+                
+        return data_out, month_found, this_year 
     
     return data_out 
     

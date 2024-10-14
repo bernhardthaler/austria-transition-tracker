@@ -208,7 +208,6 @@ def filt(sector = "Agriculture"):
     for sub_sector in data: 
         if sub_sector not in [data_out_names[name] for name in data_out_names] and sub_sector != "total":
             data_out["data"]["Other"]["y"] += np.array(data[sub_sector])/1000
-            # print(data_out["data"]["Other"]["y"])
          
     sum_sectors = np.zeros(len(times))
     for sub_sector in data_out["data"]:
@@ -216,7 +215,11 @@ def filt(sector = "Agriculture"):
         
     if sector not in ["LULUCF"]:
         uba_emissions = filter_uba_sectoral_emisssions()
-        # statistical_difference = np.zeros(len(sum_sectors))
+        
+        ### get rid of 2023 
+        uba_emissions["data"][sector]["y"] = uba_emissions["data"][sector]["y"][:-1]
+        uba_emissions["data"][sector]["x"] = uba_emissions["data"][sector]["x"][:-1]
+
         statistical_difference = np.array(uba_emissions["data"][sector]["y"][:-1]) - sum_sectors
         data_out["data"]["Other"]["y"] += np.array(statistical_difference)
     

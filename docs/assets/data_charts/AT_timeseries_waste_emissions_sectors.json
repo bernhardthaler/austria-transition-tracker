@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_waste_emissions_sectors",
             "data_source": "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated",
             "info": "<Other> data scaled to match total emissions from UBA dashboard",
-            "created": "2024-10-13"
+            "created": "2024-10-14"
       },
       "Solid waste disposal (landfills)": {
             "1990-01-01": 4.081,

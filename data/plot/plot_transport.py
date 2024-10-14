@@ -8,6 +8,8 @@ Created on Tue Feb  6 19:00:34 2024
 import plotly.io as pio
 pio.renderers.default = 'browser'
 import plotly.express as px
+from datetime import datetime 
+import numpy as np 
 
 from plot_single import plot_single_go
 from utils.filter import filter_eurostat_monthly
@@ -128,8 +130,7 @@ def plot():
     data = filter_car_registrations()
     data_rel, data_abs = get_car_vectors(data) 
     
-    
-    plot_single_go(title = "<b>Fuel type share</b>: new car registrations",
+    plot_single_go(title = "<b>New monthly car registrations:</b> fuel type share",
                   filename = "AT_timeseries_share_fuel_new_cars",
                   unit = "Share [%]", 
                   data_plot = data_rel,
@@ -139,26 +140,82 @@ def plot():
                   plot_type = "area",
                   plotmax_fac = 1)
     
-    plot_single_go(title = "<b>Fuel type absolute number</b>: new car registrations",
+    plot_single_go(title = "<b>New monthly car registrations:</b> fuel type absolute number",
                   filename = "AT_timeseries_number_fuel_new_cars",
                   unit = "Number", 
                   data_plot = data_abs,
                   show_plot = False,
                   colors = list([colors_cars[label] for label in colors_cars]),
                   source_text = "eurostat (road_eqr_carpda) & Statistik Austria",
-                  plot_type = "area")
+                  plot_type = "line")
+        
+    ### yearly with bars 
+    data_yearly_raw = {cat: {} for cat in data_abs["data"]}
+    for cat in data_abs["data"]: 
+        years = []
+        for t in range(len(data_abs["data"][cat]["x"])): 
+            date = data_abs["data"][cat]["x"][t]
+            if date.year in years: 
+                date_save = datetime(year = date.year, month = 1, day = 1)
+            else: 
+                years.append(date.year) 
+                date_save = date 
+                data_yearly_raw[cat][date_save] = 0 
+            data_yearly_raw[cat][date_save] += data_abs["data"][cat]["y"][t]
+
+
+    data_yearly_abs = {"data": {cat: {"x": np.array([date for date in data_yearly_raw[cat]]),
+                             "y": np.array([data_yearly_raw[cat][date] for date in data_yearly_raw[cat]])}
+                       for cat in data_yearly_raw}}  
+    
+    data_yearly_rel = {"data": {}}
+    for cat in data_yearly_abs["data"]: 
+        data_yearly_rel["data"][cat] = {"x": data_yearly_abs["data"][cat]["x"],
+                                        "y": data_yearly_abs["data"][cat]["y"]*100/data_yearly_abs["data"]["Total"]["y"]}
+        
+    year_last = data_abs["data"]["Total"]["x"][-1].year
+    month_last = data_abs["data"]["Total"]["x"][-1].month
+    
+    data_yearly_rel["data"].pop("Total")
+    data_yearly_abs["data"].pop("Total")
+    
+    
+    plot_single_go(title = "<b>New yearly car registrations</b>: fuel type share",
+                  filename = "AT_timeseries_share_fuel_new_cars_yearly",
+                  unit = "Share [%]", 
+                  data_plot = data_yearly_rel,
+                  show_plot = False,
+                  colors = list([colors_cars[label] for label in colors_cars]),
+                  source_text = "eurostat (road_eqr_carpda) & Statistik Austria",
+                  plot_type = "bar",
+                  info_text = f"Data {year_last} up to {month_last}/{year_last}",
+                  legend_inside=False)
+    
+    plot_single_go(title = "<b>New yearly car registrations</b>: fuel type absolute number",
+                  filename = "AT_timeseries_number_fuel_new_cars_yearly",
+                  unit = "Number", 
+                  data_plot = data_yearly_abs,
+                  show_plot = False,
+                  colors = list([colors_cars[label] for label in colors_cars]),
+                  source_text = "eurostat (road_eqr_carpda) & Statistik Austria",
+                  plot_type = "bar",
+                  info_text = f"Data {year_last} up to {month_last}/{year_last}",
+                  legend_inside = False)   
+
+        
+    
     
     
     ### Car stock data 
-    data, month, last_year = filter_eurostat_cars(file = "AT_cars_road_eqs_carpda")
+    data, month, this_year = filter_eurostat_cars(file = "AT_cars_road_eqs_carpda")
     data_rel, data_abs = get_car_vectors(data) 
     
     info_text = ("Data of %i until %i/%i,"
-                 " Hybrids of %i/%i indclude also Plugin-Hybrids," 
-                 " Others before 2013 include also Hybrids" %(last_year+1,month,last_year+1,last_year,last_year+1))
+                 " Hybrids of %i indclude also Plugin-Hybrids<br>" 
+                 "Others before 2013 include also Hybrids" %(this_year,month,this_year,this_year))
 
     
-    plot_single_go(title = "<b>Fuel type share</b>: registered cars",
+    plot_single_go(title = "<b>Registered cars:</b> fuel type share",
                   filename = "AT_timeseries_share_fuel_stock_cars",
                   unit = "Share [%]", 
                   data_plot = data_rel,
@@ -171,7 +228,7 @@ def plot():
                   plot_type = "area",
                   plotmax_fac = 1)
         
-    plot_single_go(title = "<b>Fuel type absolute number</b>: registered cars",
+    plot_single_go(title = "<b>Registered cars:</b> fuel type absolute number",
                   filename = "AT_timeseries_number_fuel_stock_cars",
                   unit = "Number", 
                   data_plot = data_abs,
@@ -181,7 +238,7 @@ def plot():
                   colors = list([colors_cars[label] for label in colors_cars]),
                   source_text = "eurostat (road_eqs_carpda) and Statistik Austria",
                   info_text = info_text, 
-                  plot_type = "area")
+                  plot_type = "line")
     
     
     ### Lorries registrations data 
@@ -189,7 +246,7 @@ def plot():
                                 options = {"vehicle": "VG_LE3P5"})
     data_rel, data_abs = get_car_vectors(data) 
     
-    plot_single_go(title = "<b>Fuel type share</b>: new lorry (≤3.5t) registrations",
+    plot_single_go(title = "<b>New lorry (≤3.5t) registrations:</b> fuel type share",
               filename = "AT_timeseries_share_fuel_new_lorries_le3p5",
               unit = "Share [%]", 
               data_plot = data_rel,
@@ -200,7 +257,7 @@ def plot():
               plot_type = "area",
               plotmax_fac = 1)
     
-    plot_single_go(title = "<b>Fuel type absolute number</b>: new lorry (≤3.5t) registrations",
+    plot_single_go(title = "<b>New lorry (≤3.5t) registrations:</b> fuel type absolute number",
               filename = "AT_timeseries_number_fuel_new_lorries_le3p5",
               unit = "Number", 
               data_plot = data_abs,
@@ -208,14 +265,14 @@ def plot():
               show_plot = False,
               colors = list([colors_cars[label] for label in colors_cars]),
               source_text = "eurostat (road_eqr_lormot)",
-              plot_type = "area")   
+              plot_type = "line")   
     
 
     data = filter_eurostat_cars(file = "AT_lorries_road_eqr_lormot",
                                 options = {"vehicle": "LOR_GT3P5"})
     data_rel, data_abs = get_car_vectors(data) 
     
-    plot_single_go(title = "<b>Fuel type share</b>: new lorry (>3.5t) registrations",
+    plot_single_go(title = "<b>New lorry (>3.5t) registrations:</b> fuel type share",
               filename = "AT_timeseries_share_fuel_new_lorries_gt3p5",
               unit = "Share [%]", 
               data_plot = data_rel,
@@ -226,7 +283,7 @@ def plot():
               plot_type = "area",
               plotmax_fac = 1)
     
-    plot_single_go(title = "<b>Fuel type absolute number</b>: new lorry (>3.5t) registrations",
+    plot_single_go(title = "<b>New lorry (>3.5t) registrations:</b> fuel type absolute number",
               filename = "AT_timeseries_number_fuel_new_lorries_gt3p5",
               unit = "Number", 
               data_plot = data_abs,
@@ -234,7 +291,7 @@ def plot():
               show_plot = False,
               colors = list([colors_cars[label] for label in colors_cars]),
               source_text = "eurostat (road_eqr_lormot)",
-              plot_type = "area")   
+              plot_type = "line")   
     
 
     ### railway network 
@@ -247,7 +304,7 @@ def plot():
               time_res = "yearly",
               show_plot = False,
               source_text = "eurostat (rail_if_line_tr) & Statistik Austria",
-              plot_type = "area")   
+              plot_type = "line")   
     
     plot_single_go(title = "<b>Rail track lengths</b>: shares electrified/non-electrified",
               filename = "AT_timeseries_rail_tracks_rel",
