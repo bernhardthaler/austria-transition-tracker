@@ -10,6 +10,7 @@ from plot_single import plot_single_go
 import numpy as np 
 
 from utils import filter_national_inventory
+from utils import filter_unfcc
 from utils.filter import filter_eurostat_energy_balance
 from utils.filter import filter_uba_sectoral_emisssions
 from utils.filter import filter_uba_emissions
@@ -56,15 +57,17 @@ def plot(show_plot=True):
     
     for sector in sectors: 
         ### emissions with sub-sectors 
-        data_emissions = filter_national_inventory.filt(sector =  sector)
-        
+        # data_emissions = filter_national_inventory.filt(sector =  sector)
+        data_emissions = filter_unfcc.filt(sector =  sector)
+
         if sector in ["LULUCF"]:
-            source_text = "Austria NIR 2023"
+            source_text = "UNFCC, sectoral data 2023 extrapolated"
             info_text = ""
             plot_type = "area_neg"
         else: 
-            source_text = "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated"
-            info_text =  "<Other> data scaled to match total emissions from UBA dashboard"
+            # source_text = "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated"
+            source_text = "UNFCC for sectoral, UBA (Klimadashboard) for total emissions"
+            info_text =  "<Other> scaled to match total emissions from UBA, 2023 sectoral data extrapolated"
             plot_type = "area" 
 
         plot_single_go(title = "<b>%s GHG emissions</b> by sub-sectors" %(sector),

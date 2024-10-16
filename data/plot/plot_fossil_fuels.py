@@ -329,15 +329,14 @@ def plot_emissions_fuels():
     return data_raw
 
 def extrapolate_emissions_by_cons(consumption, 
-                          years_extrapolate = [2023,2024], 
-                          train_start = 2008,
-                          train_end = 2022,
+                          years_extrapolate = [2024], 
+                          train_start = 2019,
+                          train_end = 2023,
                           plot = False): 
 
     times_train = pd.date_range(start = datetime(year = train_start, month = 1, day =1),
                           end = datetime(year = train_end, month = 1, day = 1),
-                          freq="YS")
-    
+                          freq="YS")    
     emissions_fuels = {}
     for f in consumption: 
         emissions_fuels[f] = []
@@ -348,7 +347,7 @@ def extrapolate_emissions_by_cons(consumption,
     emissions_train = np.zeros(len(times_train))
     for f in fossils: 
         emissions_train = emissions_train + np.array(emissions_fuels[f])
-                               
+
     emissions_real = filter_uba_sectoral_emisssions()
     emissions_energy_years = []
     for time in times_train: 
@@ -356,20 +355,23 @@ def extrapolate_emissions_by_cons(consumption,
         emissions_energy_years.append(emissions_real["data"]["Transport"]["y"][ind]+
                                      emissions_real["data"]["Buildings"]["y"][ind]+
                                      emissions_real["data"]["Energy & Industry"]["y"][ind])
-        
+
     facs = []
     for t in range(len(times_train)):
         e_real = emissions_energy_years[t]
         e_train = emissions_train[t]
         facs.append(e_real/e_train)
-    
+
     fac_mean = np.mean(np.array(facs))
+    # fac_mean = np.average(np.array(facs), weights = np.linspace(1,3,len(facs)))
+    # fac_mean = facs[-1]
     std_estimator = np.sqrt(np.var(facs)*len(facs)/(len(facs)-1.5))
     
     ### ESTIMATE EMISSIONS AND EXTRAPOLATE     
     times_projected = pd.date_range(start = datetime(year = years_extrapolate[0], month = 1, day =1),
                           end = datetime(year = years_extrapolate[-1], month = 1, day = 1),
                           freq="YS")
+
     emissions_energy_model = [0 for i in range(len(times_projected))]
     emissions_energy_projected = []
     std_emission_projected = []
@@ -383,7 +385,7 @@ def extrapolate_emissions_by_cons(consumption,
         for f in fossils: 
             emissions_energy_model[i] += consumption[f]["data"][time_project]*fossils[f]["NCV"]*fossils[f]["em_fac"]/1000
         emissions_energy_projected.append(emissions_energy_model[i]*fac_mean)
-    
+
         ### estimate std of projection (energy-based to total emissions)
         std_emission_projected.append(emissions_energy_projected[i]*std_estimator)
     
@@ -398,8 +400,7 @@ def extrapolate_emissions_by_cons(consumption,
                                          * fac_mean)
             
         total_std.append(std_emission_projected[i] + std_consumption_projected[i])
-    
-    
+            
     ### for agriculture, fluorinated gases and waste, extrapolate current emission trends 
     emissions_rest_years = (np.array(emissions_real["data"]["Agriculture"]["y"]) + 
                             np.array(emissions_real["data"]["Waste"]["y"]) + 
@@ -448,7 +449,7 @@ def extrapolate_emissions_by_cons(consumption,
                       time_res = "yearly",
                       show_plot = plot,
                       unit_fac= 1, 
-                      source_text = "Umweltbundesamt, eurostat & own projection",
+                      source_text = f"Umweltbundesamt, eurostat & own projection (train years {train_start}-{train_end})",
                       plot_type = "line")
     
     data_out = {"emissions_energy_projected": emissions_energy_projected,
@@ -689,8 +690,9 @@ def plot_emission_estimate_demo():
 
     
 if __name__ == "__main__":
+    print("Plotting ...")
     # extrapolate_fossil_fuels()
-    data = extrapolate_emissions(plot = False)
+    data = extrapolate_emissions(plot = True)
     
     # data = plot_extrapolation_demo()
     # plot_emission_estimate_demo()
