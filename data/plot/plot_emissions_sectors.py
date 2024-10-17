@@ -61,12 +61,12 @@ def plot(show_plot=True):
         data_emissions = filter_unfcc.filt(sector =  sector)
 
         if sector in ["LULUCF"]:
-            source_text = "UNFCC, sectoral data 2023 extrapolated"
+            source_text = "EEA, sectoral data 2023 extrapolated"
             info_text = ""
             plot_type = "area_neg"
         else: 
             # source_text = "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated"
-            source_text = "UNFCC for sectoral, UBA (Klimadashboard) for total emissions"
+            source_text = "EEA for sectoral, UBA (Klimadashboard) for total emissions"
             info_text =  "<Other> scaled to match total emissions from UBA, 2023 sectoral data extrapolated"
             plot_type = "area" 
 

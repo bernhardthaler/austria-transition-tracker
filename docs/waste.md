@@ -24,3 +24,19 @@ permalink: /waste/
    <div class="spacer"></div>
 
 </div> 
+
+
+<div class="row">
+ <div class="spacer"></div>
+
+  <div class="column_left">
+    {% include AT_timeseries_long_term_storage_C_disposal.html %}
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="column_right">
+  </div>
+   <div class="spacer"></div>
+
+</div> 

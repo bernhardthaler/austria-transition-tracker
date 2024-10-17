@@ -23,7 +23,8 @@ def plot_single_go(title = "",
                    source_text = None,
                    info_text = None,
                    plot_type = "line",
-                   plotmax_fac = 1.1):
+                   plotmax_fac = 1.1,
+                   save = True):
     
     if source_text == None:
         source_text = "eurostat (%s)" %(data_plot["meta"]["code"])
@@ -382,81 +383,84 @@ def plot_single_go(title = "",
 
     
     """ save figure data as static json file """
-    data_dict = {"meta": {"chart": filename,
-                          "data_source": source_text,
-                          "info": info_text,
-                          "created": datetime.datetime.today().strftime("%Y-%m-%d")
-        }}
-    
-    if plot_type == "area_button": 
-        for bal in data_plot:
-            data_dict[bal] = {}
-            for data in data_plot[bal]["data"]:
-                data_dict[bal][data] = {}
-                x = data_plot[bal]["data"][data]["x"]
+    if save: 
+        data_dict = {"meta": {"chart": filename,
+                              "data_source": source_text,
+                              "info": info_text,
+                              "created": datetime.datetime.today().strftime("%Y-%m-%d")
+            }}
+        
+        if plot_type == "area_button": 
+            for bal in data_plot:
+                data_dict[bal] = {}
+                for data in data_plot[bal]["data"]:
+                    data_dict[bal][data] = {}
+                    x = data_plot[bal]["data"][data]["x"]
+                    for i in range(len(x)):
+                        data_dict[bal][data][x[i].strftime('%Y-%m-%d')] = data_plot[bal]["data"][data]["y"][i]/unit_fac
+        
+        else:
+            for data in data_plot["data"]:
+                data_dict[data] = {}
+                x = data_plot["data"][data]["x"]
                 for i in range(len(x)):
-                    data_dict[bal][data][x[i].strftime('%Y-%m-%d')] = data_plot[bal]["data"][data]["y"][i]/unit_fac
+                    data_dict[data][x[i].strftime('%Y-%m-%d')] = data_plot["data"][data]["y"][i]
+                    
+        with open("../../docs/assets/data_charts/%s.json" %(filename), "w") as fp:
+            json.dump(data_dict, fp, indent = 6)
     
-    else:
-        for data in data_plot["data"]:
-            data_dict[data] = {}
-            x = data_plot["data"][data]["x"]
-            for i in range(len(x)):
-                data_dict[data][x[i].strftime('%Y-%m-%d')] = data_plot["data"][data]["y"][i]
-                
-    with open("../../docs/assets/data_charts/%s.json" %(filename), "w") as fp:
-        json.dump(data_dict, fp, indent = 6)
-
-
+    
     """ show and save plot """
     if show_plot: 
         fig.show(renderer = "browser")
-    fig.write_html("../../docs/_includes/%s.html" %(filename),
-                    include_plotlyjs='cdn',
-                    default_width = "100%",
-                    config = {"modeBarButtons": [[
-                        "zoom2d", 
-                        "pan2d",
-                        'zoomIn2d', 
-                        'zoomOut2d',
-                        'resetViews',
-                        'autoScale2d',
-                        'toImage']]})
-    
-    
-    """ add download button as direct js code in html file """
-    custom_button = (""
-        "{name: \'Download data\',"
-        "icon: {\'width\': 500,"
-                "\'height': 499,"
-                "\'path': 'M256,409.7,152.05,305.75,173.5,284.3l67.33,67.32V34h30.34V351.62L338.5,284.3,360,305.75ZM445.92,351v93.22a3.61,3.61,0,0,1-3.47,3.48H69.15a3.3,3.3,0,0,1-3.07-3.48V351H35.74v93.22A33.66,33.66,0,0,0,69.15,478h373.3a33.85,33.85,0,0,0,33.81-33.82V351Z'},"     
-                "click: () => {"
-                "var filename = \'%s.json\';"
-                # "var jsonUrl = \'{{site.baseurl}}assets/data_charts/%s.json\';"
-                "var jsonUrl = \'{{ \'/assets/data_charts/%s.json\' | relative_url }}\';"
-                "var link = document.createElement(\'a\');"
-                "link.href = jsonUrl;"
-                "link.setAttribute(\'download\', filename);"
-                "document.body.appendChild(link);"
-                "link.click(); "
-                "document.body.removeChild(link);}"                      
-                "},"  %(filename, filename)
-                )
-    
-    ### load old file and add the custom download button to the modeBarButtons config 
-    fp_old = open("../../docs/_includes/%s.html" %(filename), "r") 
-    lines = fp_old.readlines() 
-    fp_old.close()
-    
-    fp_new = open("../../docs/_includes/%s.html" %(filename), "w") 
-    for line in lines:
-        if "modeBarButtons" in line: 
-            text_before = line.split("\"zoom2d\"")[0]
-            text_after = line.split("\"zoom2d\"")[1]
-            new_text = text_before + custom_button + "\"zoom2d\"" + text_after 
-            fp_new.write(new_text)
-        else:
-            fp_new.write(line)
+        
+    if save: 
+        fig.write_html("../../docs/_includes/%s.html" %(filename),
+                        include_plotlyjs='cdn',
+                        default_width = "100%",
+                        config = {"modeBarButtons": [[
+                            "zoom2d", 
+                            "pan2d",
+                            'zoomIn2d', 
+                            'zoomOut2d',
+                            'resetViews',
+                            'autoScale2d',
+                            'toImage']]})
+        
+        
+        """ add download button as direct js code in html file """
+        custom_button = (""
+            "{name: \'Download data\',"
+            "icon: {\'width\': 500,"
+                    "\'height': 499,"
+                    "\'path': 'M256,409.7,152.05,305.75,173.5,284.3l67.33,67.32V34h30.34V351.62L338.5,284.3,360,305.75ZM445.92,351v93.22a3.61,3.61,0,0,1-3.47,3.48H69.15a3.3,3.3,0,0,1-3.07-3.48V351H35.74v93.22A33.66,33.66,0,0,0,69.15,478h373.3a33.85,33.85,0,0,0,33.81-33.82V351Z'},"     
+                    "click: () => {"
+                    "var filename = \'%s.json\';"
+                    # "var jsonUrl = \'{{site.baseurl}}assets/data_charts/%s.json\';"
+                    "var jsonUrl = \'{{ \'/assets/data_charts/%s.json\' | relative_url }}\';"
+                    "var link = document.createElement(\'a\');"
+                    "link.href = jsonUrl;"
+                    "link.setAttribute(\'download\', filename);"
+                    "document.body.appendChild(link);"
+                    "link.click(); "
+                    "document.body.removeChild(link);}"                      
+                    "},"  %(filename, filename)
+                    )
+        
+        ### load old file and add the custom download button to the modeBarButtons config 
+        fp_old = open("../../docs/_includes/%s.html" %(filename), "r") 
+        lines = fp_old.readlines() 
+        fp_old.close()
+        
+        fp_new = open("../../docs/_includes/%s.html" %(filename), "w") 
+        for line in lines:
+            if "modeBarButtons" in line: 
+                text_before = line.split("\"zoom2d\"")[0]
+                text_after = line.split("\"zoom2d\"")[1]
+                new_text = text_before + custom_button + "\"zoom2d\"" + text_after 
+                fp_new.write(new_text)
+            else:
+                fp_new.write(line)
 
     
     
