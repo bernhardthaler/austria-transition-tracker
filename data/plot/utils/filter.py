@@ -592,7 +592,7 @@ def filter_uba_sectoral_emisssions():
 
 
 
-def filter_eurostat_energy_balance(siecs = {"Natural gas": "Natural gas"}, 
+def filter_eurostat_energy_balance(siecs = {"Natural gas": ["Natural gas"]}, 
                                    bals = ["Final consumption - transport sector - energy use"]): 
     
     years = [1990+i for i in range(100)]
@@ -616,12 +616,13 @@ def filter_eurostat_energy_balance(siecs = {"Natural gas": "Natural gas"},
             
         for bal in bals: 
             for siec in siecs: 
-                if np.isnan(data_year[siecs[siec]][bal]):
-                    value = 0 
-                else: 
-                    value = data_year[siecs[siec]][bal]
-                    
-                data["data"][siec]["y"][t] += value 
+                for sub_siec in siecs[siec]:
+                    if np.isnan(data_year[sub_siec][bal]):
+                        value = 0 
+                    else: 
+                        value = data_year[sub_siec][bal]
+                        
+                    data["data"][siec]["y"][t] += value 
                    
     return data 
 

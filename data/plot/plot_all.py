@@ -16,7 +16,7 @@ import plot_industry
 import plot_emissions_sectors
 import plot_energy 
 import plot_waste 
-
+import plot_energy_balance 
 
 def plot_all():
     print("Plotting ... ")
@@ -30,6 +30,7 @@ def plot_all():
     plot_waste.plot()
     plot_emissions_sectors.plot()
     plot_energy.plot()
+    plot_energy_balance.plot()
     
   
 if __name__ == "__main__": 
