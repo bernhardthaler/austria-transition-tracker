@@ -132,7 +132,7 @@ def plot(show_plot = False):
                                           "Pipelines": "Final consumption - transport sector - pipeline transport - energy use",
                                           "Other": "Final consumption - transport sector - not elsewhere specified - energy use"}
                               },
-                "Total": {"file": "total",
+                "AT-total": {"file": "total",
                           "en_bal": {"Total": "Available for final consumption"}}
                 }
 

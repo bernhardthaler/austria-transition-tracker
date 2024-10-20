@@ -12,7 +12,8 @@ import os
 
 def filter_meat(size = "Menschlicher Verzehr", fac = 1): 
     
-    filepath  = "../../data_raw/statistik_austria/meat_consumption_StatCube_table_2024-03-16_09-44-19.csv"
+    filepath = "../../data_raw/statistik_austria/meat_consumption_StatCube_table_2024-10-20.csv"
+    # filepath  = "../../data_raw/statistik_austria/meat_consumption_StatCube_table_2024-03-16_09-44-19.csv"
     fp = open(os.path.join(os.path.dirname(__file__), filepath), "r")
     data = pd.read_csv(fp, skiprows = 6, encoding =  "ISO-8859-1", on_bad_lines='skip', 
                        sep=";", skipfooter=1,engine = "python", decimal = ",")
