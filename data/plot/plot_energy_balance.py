@@ -8,6 +8,9 @@ Created on Sat Oct 19 10:32:07 2024
 import plotly.express as px
 from plot_single import plot_single_go
 import numpy as np 
+import os 
+import pandas as pd 
+import datetime 
 
 from utils.filter import filter_eurostat_energy_balance
 
@@ -16,7 +19,7 @@ from utils.filter import filter_eurostat_energy_balance
 def plot(show_plot = False): 
     
     
-    ### TOTAL FINAL AND PRIMARY ENERGY 
+    ### GROSS ENERGY CONSUMPTION 
     siecs_gross_energy = {"Natural gas": ["Natural gas"],
               "Oil": ["Oil and petroleum products (excluding biofuel portion)"],
               "Coal": ["Solid fossil fuels"],
@@ -46,8 +49,40 @@ def plot(show_plot = False):
     for siec in siecs_gross_energy: 
         data_all_abs_plot["data"][siec] = data_all_abs["data"][siec]
         
+
+    ### VORLÄUFIGE ENERGIEBILANZ 
+    if not data_all_abs_plot["data"]["Oil"]["x"][-1].year == 2022: 
+        data_source = "eurostat energy balances (nrg_bal_c)"
+    else: 
+        data_source = "eurostat energy balances (nrg_bal_c) + Statistik Austria preliminary energy balance"
+        
+        data_2023 = pd.read_excel(os.path.join(os.path.dirname(__file__), 
+                                                "../data_raw/statistik_austria/vorlaeufigeEnergiebilanzenOesterreich2023inTerajouleDatenI(1).xlsx"),
+                                  skiprows = 1)
+        
+        x_new = pd.date_range(start = data_all_abs_plot["data"]["Oil"]["x"][0],
+                              end = datetime.datetime(year = 2023,month=1,day=1),freq = "YS")
+        siecs = {"Natural gas": ["Gas"],
+                "Oil": ["Öl"],
+                "Coal": ["Kohle"],
+                "Biomass": ["Brennholz", "feste Biogene Brenn- u. Treibstoffe",
+                            "Biogase", "Bioethanol (Beimengung)", "Biodiesel (Beimengung)"],
+                "Renewable electricity": ["Wasserkraft", "Windkraft", "Fotovoltaik"],
+                "Ambient heat": ["Umgebungs-wärme","Geothermie", "Solarthermie"],
+                "Other": ["Elektrische Energie", "Fernwärme", "Brennbare Abfälle",
+                          "Gichtgas", "Kokereigas", "Raffinerie-Restgas"]}
+            
+        for siec in siecs: 
+            value = 0 
+            for energy_type in siecs[siec]:
+                value += float(data_2023[energy_type][data_2023["Bilanzaggregat \ Energieträger\n"] == "Bruttoinlandsverbrauch"].iloc[0])/3600
+                
+            data_all_abs_plot["data"][siec] = {"y": np.append(
+                data_all_abs_plot["data"][siec]["y"], value),
+                "x": x_new}
+
+
     data_all_rel_plot = {"data": {}}
-    
     data_total = np.zeros(len(data_all_abs_plot["data"]["Oil"]["x"]))
     for siec in colors_siecs_gross_energy: 
         data_total += np.array(data_all_abs_plot["data"][siec]["y"])
@@ -64,7 +99,7 @@ def plot(show_plot = False):
                   time_res = "yearly",
                   show_plot = show_plot,
                   colors = list([colors_siecs_gross_energy[label] for label in colors_siecs_gross_energy]),
-                  source_text = "eurostat energy balances (nrg_bal_c)",
+                  source_text = data_source,
                   plot_type = "area",
                   plotmax_fac = 1)
         
@@ -75,7 +110,7 @@ def plot(show_plot = False):
                   time_res = "yearly",
                   show_plot = show_plot,
                   colors = list([colors_siecs_gross_energy[label] for label in colors_siecs_gross_energy]),
-                  source_text = "eurostat energy balances (nrg_bal_c)",
+                  source_text = data_source,
                   plot_type = "area")
     
     
@@ -102,8 +137,6 @@ def plot(show_plot = False):
                     "District Heat": set2[3],
                     "Other": set2[1]}    
     
-    
-    ### SECTORS 
     sectors = {"Buildings": {"file": "buildings",
                               "en_bal": {"Households": "Final consumption - other sectors - households - energy use",
                                         "Commercial": "Final consumption - other sectors - commercial and public services - energy use"}},
@@ -162,12 +195,53 @@ def plot(show_plot = False):
                         total_sector += data_all_abs_plot[bal]["data"][siec]["y"]
                 data_all_abs_plot["Total"]["data"][siec] =  {"x": data_all_abs_plot[bal]["data"][siec]["x"],
                                                               "y": total_sector}
+                
+        ### VORLÄUFIGE ENERGIEBILANZ 
+        if data_all_abs[bal]["data"]["Oil"]["x"][-1].year == 2022: 
+            
+            data_2023 = pd.read_excel(os.path.join(os.path.dirname(__file__), 
+                                                    "../data_raw/statistik_austria/vorlaeufigeEnergiebilanzenOesterreich2023inTerajouleDatenI(1).xlsx"),
+                                      skiprows = 1)
+            
+            x_new = pd.date_range(start = data_all_abs_plot["Total"]["data"]["Oil"]["x"][0],
+                                  end = datetime.datetime(year = 2023,month=1,day=1),freq = "YS")
+            siecs = {"Natural gas": ["Gas"],
+                    "Oil": ["Öl"],
+                    "Coal": ["Kohle"],
+                    "Biomass": ["Brennholz", "feste Biogene Brenn- u. Treibstoffe",
+                                "Biogase", "Bioethanol (Beimengung)", "Biodiesel (Beimengung)"],
+                    "Electricity": ["Elektrische Energie"],
+                    "District Heat": ["Fernwärme"],
+                    "Other": ["Brennbare Abfälle", "Geothermie", "Solarthermie", "Umgebungs-wärme",
+                              "Gichtgas", "Kokereigas", "Raffinerie-Restgas"]}
+            
+            
+            for siec in siecs: 
+                if sector == "Buildings": 
+                    rows = ["Öffentliche und Private Dienstleistungen", "Private Haushalte"]
+                elif sector == "Transport": 
+                    rows = ["Verkehr"]
+                elif sector == "Industry": 
+                    rows = ["Produzierender Bereich"]
+                elif sector == "Agriculture": 
+                    rows = ["Landwirtschaft"]
+                elif sector == "AT-total": 
+                    rows = ["Energetischer Endverbrauch"]
+                
+                
+                value = 0 
+                for row in rows:
+                    for energy_type in siecs[siec]:
+                        value += float(data_2023[energy_type][data_2023["Bilanzaggregat \ Energieträger\n"] == row].iloc[0])/3600
+                    
+                data_all_abs_plot["Total"]["data"][siec] = {"y": np.append(
+                    data_all_abs_plot["Total"]["data"][siec]["y"], value),
+                    "x": x_new}
                    
                     
         data_all_rel_plot = {}
         for bal in data_all_abs_plot:
             data_all_rel_plot[bal] = {"data": {}}
-            
             data_total = np.zeros(len(data_all_abs_plot[bal]["data"]["Oil"]["x"]))
             for siec in colors_siecs_final_energy: 
                 data_total += np.array(data_all_abs_plot[bal]["data"][siec]["y"])
@@ -184,7 +258,7 @@ def plot(show_plot = False):
                       time_res = "yearly",
                       show_plot = show_plot,
                       colors = list([colors_siecs_final_energy[label] for label in colors_siecs_final_energy]),
-                      source_text = "eurostat energy balances (nrg_bal_c)",
+                      source_text = data_source,
                       plot_type = "area_button",
                       plotmax_fac = 1)
             
@@ -195,7 +269,7 @@ def plot(show_plot = False):
                       time_res = "yearly",
                       show_plot = show_plot,
                       colors = list([colors_siecs_final_energy[label] for label in data_all_abs_plot[bal]["data"]]),
-                      source_text = "eurostat energy balances (nrg_bal_c)",
+                      source_text = data_source,
                       plot_type = "area_button")
 
         
@@ -205,5 +279,7 @@ if __name__ == "__main__":
     print("Plotting ...")
     plot()
     
-    data = filter_eurostat_energy_balance(bals = ["Gross inland consumption"],
-                                                  siecs = {"Total": ["Total"]})
+    # data = filter_eurostat_energy_balance(bals = ["Gross inland consumption"],
+    #                                               siecs = {"Total": ["Total"]})
+
+
