@@ -6,7 +6,7 @@ Created on Fri Feb 16 17:11:04 2024
 """
 
 import plotly.express as px
-from plot_single import plot_single_go
+from plot_single import plot_single_go, plot_with_toggle
 import numpy as np 
 
 from utils import filter_national_inventory
@@ -16,7 +16,7 @@ from utils.filter import filter_uba_sectoral_emisssions
 from utils.filter import filter_uba_emissions
 
 
-def plot(show_plot=True): 
+def plot(show_plot=False): 
     
     ### Emissions total 
     data_total = filter_uba_emissions()
@@ -29,15 +29,16 @@ def plot(show_plot=True):
                                   "y": np.array(data_total)}
     
     
-    plot_single_go(title = "<b>Austrian GHG emissions</b> by sectors",
+    plot_with_toggle(title = "<b>Austrian GHG emissions</b> by sectors",
                   filename = "AT_timeseries_co2_emissions_sectors",
                   unit = "Emissions (Mt<sub>CO2e</sub>)", 
                   data_plot = emissions,
                   time_res = "yearly",
-                  show_plot = show_plot,
+                  show_plot = False,
                   source_text = "Umweltbundesamt (Klimadashboard)",
                   plot_type = "area",
-                  plotmax_fac = 1.1)
+                  plotmax_fac = 1.05,
+                  initial_visible = "bar")
 
 
     ### Emissions sectors 
@@ -64,24 +65,36 @@ def plot(show_plot=True):
             source_text = "EEA, sectoral data 2023 extrapolated"
             info_text = ""
             plot_type = "area_neg"
+            
+            plot_single_go(title = "<b>%s GHG emissions</b> by sub-sectors" %(sector),
+                          filename = "AT_timeseries_"+sectors[sector]["file"]+"_emissions_sectors",
+                          unit = "Emissions (Mt<sub>CO2e</sub>)", 
+                          data_plot = data_emissions,
+                          time_res = "yearly",
+                          show_plot = show_plot,
+                          legend_inside = False,
+                          source_text = source_text,
+                          info_text = info_text,
+                          plot_type = plot_type,
+                          plotmax_fac = 1.05)
         else: 
             # source_text = "Austria NIR 2023, UBA (Klimadashboard), sectoral data 2022 extrapolated"
             source_text = "EEA for sectoral, UBA (Klimadashboard) for total emissions"
             info_text =  "<Other> scaled to match total emissions from UBA, 2023 sectoral data extrapolated"
             plot_type = "area" 
-
-        plot_single_go(title = "<b>%s GHG emissions</b> by sub-sectors" %(sector),
-                      filename = "AT_timeseries_"+sectors[sector]["file"]+"_emissions_sectors",
-                      unit = "Emissions (Mt<sub>CO2e</sub>)", 
-                      data_plot = data_emissions,
-                      time_res = "yearly",
-                      show_plot = show_plot,
-                      legend_inside = False,
-                      source_text = source_text,
-                      info_text = info_text,
-                      plot_type = plot_type,
-                      plotmax_fac = 1.1)
-        
+    
+            plot_with_toggle(title = "<b>%s GHG emissions</b> by sub-sectors" %(sector),
+                          filename = "AT_timeseries_"+sectors[sector]["file"]+"_emissions_sectors",
+                          unit = "Emissions (Mt<sub>CO2e</sub>)", 
+                          data_plot = data_emissions,
+                          time_res = "yearly",
+                          show_plot = show_plot,
+                          legend_inside = False,
+                          source_text = source_text,
+                          info_text = info_text,
+                          plotmax_fac = 1.05,
+                          initial_visible = "bar")
+            
         
         
     

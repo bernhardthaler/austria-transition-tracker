@@ -24,90 +24,35 @@ permalink: /energy_industry/
 
 </div> 
 
+<div id="energy_use" class="row">
+  <div class="spacer"></div>
 
-<div class="row"> 
-<div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_gross_inland_consumption_share.html %}
+  <div class="header-container">
+    <h3 class="section-header">Energy use</h3>
+    <hr>
   </div>
 
   <div class="spacer"></div>
-
-  <div class="column_right">
-    {% include AT_timeseries_gross_inland_consumption_absolute.html %}
-  </div>
-   <div class="spacer"></div>
-
-</div> 
-
-<div class="row"> 
-<div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_total_final_energy_use_share.html %}
-  </div>
-
-  <div class="spacer"></div>
-
-  <div class="column_right">
-    {% include AT_timeseries_total_final_energy_use.html %}
-  </div>
-   <div class="spacer"></div>
-
-</div> 
-
+</div>
 
 
 <div class="row"> 
 <div class="spacer"></div>
 
   <div class="column_left">
-    {% include AT_timeseries_industry_final_energy_use_share.html %}
-  </div>
-
-  <div class="spacer"></div>
-
-  <div class="column_right">
     {% include AT_timeseries_industry_final_energy_use.html %}
   </div>
-   <div class="spacer"></div>
-
-</div> 
-
-<div class="row">
- <div class="spacer"></div>
-
-  <div class="column_left">
-   {% include AT_timeseries_elec_energy_use_share.html %}
-  </div>
 
   <div class="spacer"></div>
 
   <div class="column_right">
-         {% include AT_timeseries_elec_energy_use.html %}
+    {% include AT_timeseries_industry_final_energy_use_share.html %}
   </div>
    <div class="spacer"></div>
 
 </div> 
 
 
-
-<div class="row">
- <div class="spacer"></div>
-
-  <div class="column_left">
-   {% include AT_timeseries_dh_energy_use_share.html %}
-  </div>
-
-  <div class="spacer"></div>
-
-  <div class="column_right">
-         {% include AT_timeseries_dh_energy_use.html %}
-  </div>
-   <div class="spacer"></div>
-
-</div> 
 
 
 <div class="row">

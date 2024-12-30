@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_land_use_abs",
             "data_source": "National Inventory Report",
             "info": null,
-            "created": "2024-05-02"
+            "created": "2024-12-25"
       },
       "Forests": {
             "1990-01-01": 3893.0,

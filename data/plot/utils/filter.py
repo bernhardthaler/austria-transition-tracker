@@ -96,6 +96,7 @@ def filter_eurostat_monthly(name = "meat",
             end_year = int(time.split("-")[0])
             last_month = int(time.split("-")[1])
 
+
     # end_year = int(years_trim[-1].split("-")[0])
     
     for time in data_trim: 
@@ -104,9 +105,9 @@ def filter_eurostat_monthly(name = "meat",
             break 
     start_year = max(start_year, start_year_data)
     
-    times = pd.date_range(start = datetime(year = start_year, month = 1, day =1),
-                          end = datetime(year = end_year+1, month = 1, day = 1),
-                          freq="ME")
+    times = pd.date_range(start = datetime(year = start_year, month = 1, day =1)+ pd.DateOffset(days=15),
+                          end = datetime(year = end_year+1, month = 1, day = 11)+ pd.DateOffset(days=15),
+                          freq="MS")
     
     # ### find last key with columns 
     # for month in range(1, 13):
@@ -117,7 +118,9 @@ def filter_eurostat_monthly(name = "meat",
     times_plot = []
     values = []
     for time in times: 
-        if time.year == end_year and time.month > last_month: 
+        if time.year > end_year: 
+            pass
+        elif time.year == end_year and time.month > last_month: 
             pass 
         else: 
             time_key = "%i-%02i" %(time.year, time.month)
@@ -127,7 +130,7 @@ def filter_eurostat_monthly(name = "meat",
             
             times_plot.append(time)
             values.append(value)
-            
+
     times_plot_mean = []
     values_mean = []
     
@@ -202,11 +205,10 @@ def filter_car_registrations():
         for month in reversed(months):   
             filename = "NeuzulassungenFahrzeugeJaennerBis%s%i" %(month, year)
             filepath = os.path.join(os.path.dirname(__file__), 
-                "../../data_raw/statistik_austria/%s.xlsx" %(filename))
+                "../../data_raw/statistik_austria/Fahrzeuge/%s.xlsx" %(filename))
             if os.path.exists(filepath) and not file_found:
                 file_found = True 
                 month_list = list(months.keys())
-                
                 for month_name in month_list[:month_list.index(month)+1]:
                     time = pd.to_datetime(datetime(year = year, 
                                     month = month_list.index(month_name)+1,
@@ -487,7 +489,7 @@ def filter_eurostat_cars(file = "AT_cars_road_eqs_carpda",
     if file == "AT_cars_road_eqs_carpda":
         
         filepath = os.path.join(os.path.dirname(__file__), 
-                                "../../data_raw/statistik_austria/kfz-bestand_2023.xlsx")
+                                "../../data_raw/statistik_austria/Fahrzeuge/kfz-bestand_2023.xlsx")
         data_before = pd.read_excel(filepath, decimal = ",", skiprows = 1, sheet_name = "tab_2", skipfooter = 1)
         data_before = data_before.replace("-", 0).infer_objects(copy=False)
         years_before = [int(1995+i) for i in range(2013-1995)]
@@ -519,7 +521,7 @@ def filter_eurostat_cars(file = "AT_cars_road_eqs_carpda",
         file_found = False 
         for month in reversed(months):   
             filepath = os.path.join(os.path.dirname(__file__), 
-                                    "../../data_raw/statistik_austria/BestandFahrzeuge%s%iVorlaeufigeDaten.xlsx" %(month, this_year))
+                                    "../../data_raw/statistik_austria/Fahrzeuge/BestandFahrzeuge%s%iVorlaeufigeDaten.xlsx" %(month, this_year))
             if os.path.exists(filepath) and not file_found:
                 file_found = True 
                 month_found = months[month] 

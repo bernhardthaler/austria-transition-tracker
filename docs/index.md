@@ -11,11 +11,11 @@ layout: home
   <b>Welcome to the <i>Austria Transition Tracker!</i> </b> <br>
   This site collects and displays various data connected to the sustainable transition in Austria. <br>
   <br>
-  On the chart to the right you can see the historical greenhouse gas (GHG) emissions and corresponding sector contributions in Austria. The target of this page is to track the (hopefully) continuing transition to zero emissions with public available data. <br> 
+  On the chart to the right you can see the historical greenhouse gas (GHG) emissions and corresponding sector contributions in Austria. The target of this page is to track the (hopefully) continuing transition to zero emissions with public available data.  <br> 
   <br>  
-  On the top menu you can navigate to different sub-sector pages that show detailed data of each sector. <br>
+  On the top menu you can navigate to the different <b>sectors</b> shown in the chart to show more detailed data of each sector. In addition, there are extra pages on <b><a href= "{{ "/energy/" | relative_url }}">energy</a></b> and <b><a href= "{{ "/fossil_fuels/" | relative_url }}">fossil fuels</a></b> that tracke some more general trends. <br>
   <br> 
-  Additional datasets might be added in future - any suggestions are very welcome! <br>
+  New data sets are added constantly, depending on time resources and convenient availability - any suggestions are very welcome! <br>
   For more information, data sources, and technical details please visit the <b><a href= "{{ "/about/" | relative_url }}">About page.</a></b> <br> 
   <br>   
   </div>
@@ -29,6 +29,18 @@ layout: home
    <div class="spacer"></div>
 
 </div> 
+
+<div id="ghg_projection" class="row">
+  <div class="spacer"></div>
+
+  <div class="header-container">
+    <h3 class="section-header">Current GHG emission projection</h3>
+    <hr>
+  </div>
+
+  <div class="spacer"></div>
+</div>
+
 
 <div class="row">
 
@@ -46,7 +58,7 @@ layout: home
     <br> 
     The model is rather simple and based on past data and temporal correlation. Extrapolated data must therefore be interpreted with great care, especially early in the year! <br> 
     <br> 
-    Yearly and monthly fuel consumption data (including extrapolations) of all considered fossil fuels are shown below.<br><br>
+    Estimated monthly and yearly emission data (including extrapolations) of all considered fossil fuels are shown below. Detailed consumption data of specific fuels are shown on the <b><a href= "{{ "/fossil_fuels/" | relative_url }}">fossil fuels page</a></b> <br><br>
 
   </div>
 
@@ -76,164 +88,4 @@ layout: home
 
 </div> 
 
-
-
-<div class="row">
-
- <div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_consumption_natural_gas_monthly.html %}
-  </div>
-  
- <div class="spacer"></div>
-
-  <div class="column_right">
-   {% include AT_timeseries_consumption_natural_gas_yearly.html %}
-  </div>
-
-   <div class="spacer"></div>
-
-</div> 
-
-<div class="row">
-
- <div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_consumption_gasoline_monthly.html %}
-  </div>
-  
- <div class="spacer"></div>
-
-  <div class="column_right">
-      {% include AT_timeseries_consumption_gasoline_yearly.html %}
-  </div>
-
-   <div class="spacer"></div>
-
-</div> 
-
-
-<div class="row">
- <div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_consumption_diesel_monthly.html %}
-  </div>
-  
- <div class="spacer"></div>
-
-  <div class="column_right">
-      {% include AT_timeseries_consumption_diesel_yearly.html %}
-  </div>
-   <div class="spacer"></div>
-
-</div> 
-
-
-<div class="row">
- <div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_consumption_heating_oil_monthly.html %}
-  </div>
-  
- <div class="spacer"></div>
-
-  <div class="column_right">
-      {% include AT_timeseries_consumption_heating_oil_yearly.html %}
-  </div>
-   <div class="spacer"></div>
-
-</div> 
-
-
-<div class="row">
- <div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_consumption_refinery_gas_monthly.html %}
-  </div>
-  
- <div class="spacer"></div>
-
-  <div class="column_right">
-      {% include AT_timeseries_consumption_refinery_gas_yearly.html %}
-  </div>
-   <div class="spacer"></div>
-
-</div> 
-
-
-
-<div class="row">
- <div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_consumption_hard_coal_electricity_monthly.html %}
-  </div>
-  
- <div class="spacer"></div>
-
-  <div class="column_right">
-      {% include AT_timeseries_consumption_hard_coal_electricity_yearly.html %}
-  </div>
-   <div class="spacer"></div>
-
-</div> 
-
-
-<div class="row">
- <div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_consumption_hard_coal_industry_monthly.html %}
-  </div>
-  
- <div class="spacer"></div>
-
-  <div class="column_right">
-      {% include AT_timeseries_consumption_hard_coal_industry_yearly.html %}
-  </div>
-   <div class="spacer"></div>
-
-</div> 
-
-
-
-<div class="row">
- <div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_consumption_hard_coal_coke_ovens_monthly.html %}
-  </div>
-  
- <div class="spacer"></div>
-
-  <div class="column_right">
-      {% include AT_timeseries_consumption_hard_coal_coke_ovens_yearly.html %}
-  </div>
-   <div class="spacer"></div>
-
-</div> 
-
-
-
-
-<div class="row">
- <div class="spacer"></div>
-
-  <div class="column_left">
-    {% include AT_timeseries_consumption_coke_oven_coke_monthly.html %}
-  </div>
-  
- <div class="spacer"></div>
-
-  <div class="column_right">
-      {% include AT_timeseries_consumption_coke_oven_coke_yearly.html %}
-  </div>
-   <div class="spacer"></div>
-
-</div> 
 

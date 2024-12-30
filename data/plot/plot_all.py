@@ -17,6 +17,7 @@ import plot_emissions_sectors
 import plot_energy 
 import plot_waste 
 import plot_energy_balance 
+import plot_food_consumption 
 
 def plot_all():
     print("Plotting ... ")
@@ -24,6 +25,7 @@ def plot_all():
     plot_fossil_fuels.extrapolate_fossil_fuels(plot = False)
     plot_fossil_fuels.extrapolate_emissions(plot = False)
     plot_fossil_fuels.plot_emissions_fuels()
+    plot_fossil_fuels.plot_ng_separation()
     plot_agriculture.plot()
     plot_transport.plot()
     plot_industry.plot()
@@ -31,6 +33,7 @@ def plot_all():
     plot_emissions_sectors.plot()
     plot_energy.plot()
     plot_energy_balance.plot()
+    plot_food_consumption.plot()
     
   
 if __name__ == "__main__": 

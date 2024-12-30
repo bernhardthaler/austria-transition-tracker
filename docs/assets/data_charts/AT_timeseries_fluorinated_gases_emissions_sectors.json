@@ -1,9 +1,9 @@
 {
       "meta": {
             "chart": "AT_timeseries_fluorinated_gases_emissions_sectors",
-            "data_source": "UNFCC for sectoral, UBA (Klimadashboard) for total emissions",
+            "data_source": "EEA for sectoral, UBA (Klimadashboard) for total emissions",
             "info": "<Other> scaled to match total emissions from UBA, 2023 sectoral data extrapolated",
-            "created": "2024-10-16"
+            "created": "2024-12-28"
       },
       "Refrigeration and Air conditioning": {
             "1990-01-01": 0.0,

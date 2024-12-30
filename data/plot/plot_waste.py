@@ -5,7 +5,7 @@ Created on Sat Feb 10 18:24:03 2024
 @author: Bernhard
 """
 
-from plot_single import plot_single_go
+from plot_single import plot_single_go, plot_with_toggle
 from utils import filter_unfcc
 import pandas as pd 
 from datetime import datetime 
@@ -20,7 +20,7 @@ def plot():
     data_plot = {"data": {"Austria ": {"x": times,
                                        "y": np.array(emissions)/1e6}}}
 
-    plot_single_go(title = "Austrian long-term Storage of C in Waste Disposal Sites",
+    plot_with_toggle(title = "Austrian long-term Storage of C in Waste Disposal Sites",
                   filename = "AT_timeseries_long_term_storage_C_disposal",
                   unit = "Emissions (Mt<sub>CO2e</sub>)",
                   data_plot = data_plot,
@@ -28,7 +28,7 @@ def plot():
                   show_plot = False,
                   unit_fac= 1, 
                   source_text = "EEA greenhouse gases — data viewer (sector: 5.F.1)",
-                  plot_type = "line",
+                  initial_visible = "bar",
                   save = True)
     
     

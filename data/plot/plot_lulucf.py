@@ -6,7 +6,7 @@ Created on Thu May  2 19:57:38 2024
 """
 
 import plotly.express as px
-from plot_single import plot_single_go
+from plot_single import plot_single_go, plot_with_toggle
 import numpy as np 
 
 from utils import filter_national_inventory
@@ -25,7 +25,7 @@ colors_plot = {"Forests": colors[0],
                "Settlements": colors[4],
                "Other": colors[6]}
 
-plot_single_go(title = "<b>Land use</b>: absolute area",
+plot_with_toggle(title = "<b>Land use</b>: absolute area",
               filename = "AT_timeseries_land_use_abs",
               unit = "Area (kHa)", 
               data_plot = data_land_use,
@@ -33,7 +33,7 @@ plot_single_go(title = "<b>Land use</b>: absolute area",
               show_plot = False,
               colors = list([colors_plot[cat] for cat in data_land_use["data"]]),
               source_text = "National Inventory Report",
-              plot_type = "area",
+              initial_visible = "bar",
               plotmax_fac = 1)
     
 tot_area = np.zeros(len(data_land_use["data"]["Forests"]["x"]))
@@ -45,7 +45,7 @@ for cat in data_land_use["data"]:
                                        "y": data_land_use["data"][cat]["y"]*100/tot_area}
     
     
-plot_single_go(title = "<b>Land use</b>: relative area",
+plot_with_toggle(title = "<b>Land use</b>: shares",
               filename = "AT_timeseries_land_use_rel",
               unit = "Share (%)", 
               data_plot = data_land_use_rel,
@@ -53,5 +53,5 @@ plot_single_go(title = "<b>Land use</b>: relative area",
               show_plot = True,
               colors = list([colors_plot[cat] for cat in data_land_use["data"]]),
               source_text = "National Inventory Report",
-              plot_type = "area",
+              initial_visible = "bar",
               plotmax_fac = 1)

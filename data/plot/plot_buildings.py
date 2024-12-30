@@ -7,7 +7,7 @@ Created on Tue Feb  6 19:05:38 2024
 
 import numpy as np
 
-from plot_single import plot_single_go
+from plot_single import plot_single_go, plot_with_toggle
 from utils.filter import filter_eurostat_monthly
 from utils.filter import filter_eurostat_yearly
 from utils import filter_statistik_austria
@@ -132,7 +132,7 @@ def plot():
     ### heating systems buildings 
     data_rel, data_abs  = filter_statistik_austria.filter_heating_systems()
     
-    plot_single_go(title = "<b>Heating system shares</b>: main types",
+    plot_with_toggle(title = "<b>Heating system shares</b>: main types",
                   filename = "AT_timeseries_share_heating_systems",
                   unit = "Share [%]", 
                   data_plot = data_rel,
@@ -141,9 +141,10 @@ def plot():
                   colors = list([colors_heatings[label] for label in colors_heatings]),
                   source_text = "Source: Statistik Austria",
                   plot_type = "area",
-                  plotmax_fac = 1)
+                  plotmax_fac = 1,
+                  initial_visible = "bar")
         
-    plot_single_go(title = "<b>Heating system absolute numbers</b>: main types",
+    plot_with_toggle(title = "<b>Heating system absolute numbers</b>: main types",
                   filename = "AT_timeseries_number_heating_systems",
                   unit = "Number", 
                   data_plot = data_abs,
@@ -151,7 +152,7 @@ def plot():
                   show_plot = False,
                     colors = list([colors_heatings[label] for label in colors_heatings]),
                   source_text = "Source: Statistik Austria",
-                  plot_type = "area")
+                  initial_visible = "bar")
 
          
     

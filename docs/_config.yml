@@ -1,5 +1,5 @@
 
-title: Austria Transition Tracker (BETA v0.0.1)
+title: Austria Transition Tracker
 author: B.Thaler
 description: >- # this means to ignore newlines until "baseurl:"
 baseurl: / # the subpath of your site, e.g. /blog
@@ -13,7 +13,7 @@ classes: wide
 plugins:
   - jekyll-feed
 
-header_pages:
+sector_pages:
   - agriculture.md
   - buildings.md 
   - energy_industry.md
@@ -21,4 +21,3 @@ header_pages:
   - fluorinated_gases.md
   - transport.md
   - waste.md
-  - about.md

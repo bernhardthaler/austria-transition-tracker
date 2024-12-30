@@ -6,7 +6,7 @@ Created on Sat Oct 19 10:32:07 2024
 """
 
 import plotly.express as px
-from plot_single import plot_single_go
+from plot_single import plot_single_go, plot_with_toggle
 import numpy as np 
 import os 
 import pandas as pd 
@@ -92,7 +92,7 @@ def plot(show_plot = False):
                           "y": data_all_abs_plot["data"][siec]["y"]*100/data_total}    
             
 
-    plot_single_go(title = "<b>AT gross inland consumption</b>: shares",
+    plot_with_toggle(title = "<b>AT gross inland consumption</b>: shares",
                   filename = "AT_timeseries_gross_inland_consumption_share",
                   unit = "Share [%]", 
                   data_plot = data_all_rel_plot,
@@ -100,10 +100,10 @@ def plot(show_plot = False):
                   show_plot = show_plot,
                   colors = list([colors_siecs_gross_energy[label] for label in colors_siecs_gross_energy]),
                   source_text = data_source,
-                  plot_type = "area",
-                  plotmax_fac = 1)
+                  plotmax_fac = 1,
+                  initial_visible = "bar")
         
-    plot_single_go(title = "<b>AT gross inland consumption</b>: absolute",
+    plot_with_toggle(title = "<b>AT gross inland consumption</b>: absolute",
                   filename = "AT_timeseries_gross_inland_consumption_absolute",
                   unit = "Energy (TWh)", 
                   data_plot = data_all_abs_plot,
@@ -111,7 +111,7 @@ def plot(show_plot = False):
                   show_plot = show_plot,
                   colors = list([colors_siecs_gross_energy[label] for label in colors_siecs_gross_energy]),
                   source_text = data_source,
-                  plot_type = "area")
+                  initial_visible = "bar")
     
     
     ### SECTORIAL FINAL ENERGY 
@@ -250,29 +250,51 @@ def plot(show_plot = False):
                 data_all_rel_plot[bal]["data"][siec] = {"x": data_all_abs_plot[bal]["data"][siec]["x"],
                                   "y": data_all_abs_plot[bal]["data"][siec]["y"]*100/data_total}    
                 
-                
-        plot_single_go(title = "<b>%s</b>: final energy use - shares" %(sector),
-                      filename = "AT_timeseries_%s_final_energy_use_share" %(sectors[sector]["file"]),
-                      unit = "Share [%]", 
-                      data_plot = data_all_rel_plot,
-                      time_res = "yearly",
-                      show_plot = show_plot,
-                      colors = list([colors_siecs_final_energy[label] for label in colors_siecs_final_energy]),
-                      source_text = data_source,
-                      plot_type = "area_button",
-                      plotmax_fac = 1)
             
-        plot_single_go(title = "<b>%s</b>: final energy use" %(sector),
-                      filename = "AT_timeseries_%s_final_energy_use" %(sectors[sector]["file"]),
-                      unit = "Energy (TWh)", 
-                      data_plot = data_all_abs_plot,
-                      time_res = "yearly",
-                      show_plot = show_plot,
-                      colors = list([colors_siecs_final_energy[label] for label in data_all_abs_plot[bal]["data"]]),
-                      source_text = data_source,
-                      plot_type = "area_button")
+        if sector != "AT-total": 
+            plot_single_go(title = "<b>%s</b>: final energy use - shares" %(sector),
+                          filename = "AT_timeseries_%s_final_energy_use_share" %(sectors[sector]["file"]),
+                          unit = "Share [%]", 
+                          data_plot = data_all_rel_plot,
+                          time_res = "yearly",
+                          show_plot = show_plot,
+                          colors = list([colors_siecs_final_energy[label] for label in colors_siecs_final_energy]),
+                          source_text = data_source,
+                          plot_type = "area_button",
+                          plotmax_fac = 1)
+                
+            plot_single_go(title = "<b>%s</b>: final energy use" %(sector),
+                          filename = "AT_timeseries_%s_final_energy_use" %(sectors[sector]["file"]),
+                          unit = "Energy (TWh)", 
+                          data_plot = data_all_abs_plot,
+                          time_res = "yearly",
+                          show_plot = show_plot,
+                          colors = list([colors_siecs_final_energy[label] for label in data_all_abs_plot[bal]["data"]]),
+                          source_text = data_source,
+                          plot_type = "area_button")
+        else: 
+            plot_with_toggle(title = "<b>AT final energy use</b>: shares",
+                          filename = "AT_timeseries_%s_final_energy_use_share" %(sectors[sector]["file"]),
+                          unit = "Share [%]", 
+                          data_plot = data_all_rel_plot["Total"],
+                          time_res = "yearly",
+                          show_plot = show_plot,
+                          colors = list([colors_siecs_final_energy[label] for label in colors_siecs_final_energy]),
+                          source_text = data_source,
+                          plotmax_fac = 1,
+                          initial_visible = "bar")
+                
+            plot_with_toggle(title = "<b>AT final energy use</b>: absolute",
+                          filename = "AT_timeseries_%s_final_energy_use" %(sectors[sector]["file"]),
+                          unit = "Energy (TWh)", 
+                          data_plot = data_all_abs_plot["Total"],
+                          time_res = "yearly",
+                          show_plot = show_plot,
+                          colors = list([colors_siecs_final_energy[label] for label in data_all_abs_plot[bal]["data"]]),
+                          source_text = data_source,
+                          initial_visible = "bar")
 
-        
+    
 
 
 if __name__ == "__main__": 

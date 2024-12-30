@@ -23,6 +23,16 @@ permalink: /lulucf/
 
 </div> 
 
+<div id="land_use" class="row">
+  <div class="spacer"></div>
+
+  <div class="header-container">
+    <h3 class="section-header">Land use</h3>
+    <hr>
+  </div>
+
+  <div class="spacer"></div>
+</div>
 
 
 

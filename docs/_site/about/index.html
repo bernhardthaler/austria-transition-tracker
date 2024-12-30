@@ -3,21 +3,21 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>About | Austria Transition Tracker (BETA v0.0.1)</title>
+<title>About | Austria Transition Tracker</title>
 <meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="About" />
 <meta name="author" content="B.Thaler" />
 <meta property="og:locale" content="en_US" />
 <link rel="canonical" href="http://localhost:4000/about/" />
 <meta property="og:url" content="http://localhost:4000/about/" />
-<meta property="og:site_name" content="Austria Transition Tracker (BETA v0.0.1)" />
+<meta property="og:site_name" content="Austria Transition Tracker" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="About" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"B.Thaler"},"headline":"About","name":"Austria Transition Tracker (BETA v0.0.1)","url":"http://localhost:4000/about/"}</script>
+{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"B.Thaler"},"headline":"About","name":"Austria Transition Tracker","url":"http://localhost:4000/about/"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Austria Transition Tracker (BETA v0.0.1)" /><script type="text/x-mathjax-config">
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Austria Transition Tracker" /><script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       tex2jax: {
         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
@@ -44,13 +44,151 @@
 </head>
 
 
-<body><header class="site-header" role="banner">
+<body><!-- <header class="site-header" role="banner">
 
-  <div class="wrapper-wide"><a class="site-title" rel="author" href="/">Austria Transition Tracker (BETA v0.0.1)</a><nav class="site-nav">
-        <div class="trigger"><a class="page-link" href="/agriculture/">Agriculture</a><a class="page-link" href="/buildings/">Buildings</a><a class="page-link" href="/energy_industry/">Energy &amp; Industry</a><a class="page-link" href="/lulucf/">LULUCF</a><a class="page-link" href="/fluorinated_gases/">Fluorinated Gases</a><a class="page-link" href="/transport/">Transport</a><a class="page-link" href="/waste/">Waste</a><a class="page-link" href="/about/">About</a></div>
-      </nav></div>
+  <div class="wrapper-wide"><a class="site-title" rel="author" href="/">Austria Transition Tracker</a></div>
+</header> -->
+
+
+
+<header class="site-header" role="banner">
+  <div class="wrapper-wide">
+    <div class="header-content"><!-- Site Title -->
+      <a class="site-title" rel="author" href="/">Austria Transition Tracker</a>
+
+      <!-- Navigation --><nav class="site-nav">
+          <!-- Home link -->
+          <a class="site-link" href="/">HOME</a>
+
+          <!-- Energy link -->
+          <a class="site-link" href="/energy">ENERGY</a>
+
+          <!-- Fossil fuels link -->
+          <a class="site-link" href="/fossil_fuels">FOSSIL FUELS</a>
+
+          <!-- Dropdown for Sector -->
+          <div class="dropdown">
+            <button class="dropbtn">
+              SECTORS
+              <span class="arrow"></span>
+            </button>
+            <div class="dropdown-content"><a class="page-link" href="/agriculture/">Agriculture</a><a class="page-link" href="/buildings/">Buildings</a><a class="page-link" href="/energy_industry/">Energy &amp; Industry</a><a class="page-link" href="/lulucf/">LULUCF</a><a class="page-link" href="/fluorinated_gases/">Fluorinated Gases</a><a class="page-link" href="/transport/">Transport</a><a class="page-link" href="/waste/">Waste</a></div>
+          </div>
+
+          <!-- About link -->
+          <a class="site-link" href="/blog">BLOG</a>
+
+          <!-- About link -->
+          <a class="site-link" href="/about">ABOUT</a>
+
+
+
+        </nav></div>
+  </div>
 </header>
-<main class="page-content" aria-label="Content">
+
+
+<style>
+/* Wrapper for the site title and navigation */
+.wrapper-wide {
+  max-width: 1800px; /* Set a maximum width for the header content */
+  margin: 0 auto; /* Center the header by adding auto margins */
+  padding: 0 10px; /* Add space at the edges for responsiveness */
+  box-sizing: border-box; /* Ensure padding is included in total width */
+}
+
+/* Ensure header-content spans the full width of wrapper-wide */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Stretch across the available space */
+}
+
+/* Adjust the site title */
+.site-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+  margin: 0; /* Remove default margin */
+}
+
+/* Navigation remains the same */
+.site-nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px; /* Space between links */
+}
+/* 
+.site-link {
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+} */
+
+.site-link:hover {
+  background-color: #3e8e41;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid white;
+  margin-left: 8px;
+}
+
+.dropbtn:hover {
+  background-color: #3e8e41;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+</style><main class="page-content" aria-label="Content">
       <div class="wrapper-semiwide">
         <div class="home"><h4 class="page-heading">About</h4><h2> Motivation </h2>
 <p>This site is a purely private project, created out of interest in the sustainable transition and enthusiasm to monitor it as best as possible with publicly available data. Please note that no guarantee on data accuracy is given. Any feedback, constructive criticism, or direct contributions are very welcome and greatly appreciated!</p>

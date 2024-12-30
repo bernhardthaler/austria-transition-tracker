@@ -12,7 +12,7 @@ import plotly.express as px
 import matplotlib.pyplot as plt 
 import os 
 
-from plot_single import plot_single_go
+from plot_single import plot_single_go, plot_with_toggle
 from utils.filter import filter_eurostat_monthly
 from utils import filter_fossil_extrapolation
 from utils.filter import filter_uba_sectoral_emisssions
@@ -156,7 +156,7 @@ def separate_bios(data_monthly, f):
     return data_monthly 
 
 
-def extrapolate_fossil_fuels(plot = True):
+def extrapolate_fossil_fuels(plot = False):
     """ extrapolate the consumption data of fossil fuels to the end of year based on historic factors """
     
     consumption = {}
@@ -260,7 +260,7 @@ def extrapolate_fossil_fuels(plot = True):
                 emissions_yearly["data"][cat] = {"x": [t for t in consumption[f]["data"]],
                                      "y": values}    
                 
-    plot_single_go(title = "<b>Austrian CO2 emissions by fuels</b>: yearly (incl. projection)",
+    plot_with_toggle(title = "<b>Austrian CO2 emissions by fuels</b>: yearly (incl. projection)",
                   filename = "AT_timeseries_emissions_fuels_yearly",
                   unit = "Emissions (Mt<sub>CO2</sub>)",
                   data_plot = emissions_yearly,
@@ -268,7 +268,7 @@ def extrapolate_fossil_fuels(plot = True):
                   show_plot = plot,
                   unit_fac= 1, 
                   source_text = "eurostat & own estimation | data of not fully available years are projected",
-                  plot_type = "line")           
+                  initial_visible = "bar")           
         
     return consumption 
     
@@ -688,11 +688,76 @@ def plot_emission_estimate_demo():
     return emissions    
 
 
+
+
+def plot_ng_separation(): 
+    TJ_NCV_to_1000m3 = 0.03723 #TJ_NCV / 1000M3 
+    TJ_GCV_to_1000m3 = 0.03914 #TJ_GCV / 1000m3 
+    cats = {"Total": "Inland consumption - calculated as defined in MOS GAS [IC_CAL_MG]",
+            "Public electricity / heat": "Transformation input - electricity and heat generation - main activity producers [TI_EHG_MAP]",
+            "Buildings": "Final consumption - other sectors [FC_OTH]"}
+    data = {"data": {}}
+    for cat in cats:
+        data_monthly = filter_eurostat_monthly(name = fossils["Natural gas"]["file"],
+                                               code = fossils["Natural gas"]["code"],
+                                               options =  {"unit": "TJ_GCV",
+                                                            "nrg_bal": cats[cat]},
+                                               start_year = 2020,
+                                               unit = fossils["Natural gas"]["options"]["unit"],
+                                               movmean = 12)
+        
+        data["data"][cat] = {"x": data_monthly["data"]["Monthly"]["x"],
+                             "y": np.array(data_monthly["data"]["Monthly"]["y"])*TJ_GCV_to_1000m3/ TJ_NCV_to_1000m3 / 3.6e3}
+    
+
+    buildings_temp = np.zeros(len(data["data"]["Total"]["x"]))
+    buildings_temp[-len(data["data"]["Buildings"]["y"]):] = data["data"]["Buildings"]["y"]
+    
+    elec_temp = np.zeros(len(data["data"]["Total"]["x"]))
+    elec_temp[-len(data["data"]["Public electricity / heat"]["y"]):] = data["data"]["Public electricity / heat"]["y"]
+    
+    data["data"]["Public electricity / heat"]["y"] = elec_temp
+    data["data"]["Buildings"]["y"] = buildings_temp
+    
+    data["data"]["Public electricity / heat"]["x"] = data["data"]["Total"]["x"]
+    data["data"]["Buildings"]["x"] = data["data"]["Total"]["x"]
+
+    
+    data["data"]["Industry / Other"] = {"x": data["data"]["Total"]["x"],
+                         "y": data["data"]["Total"]["y"] - (
+                             data["data"]["Public electricity / heat"]["y"]+
+                             data["data"]["Buildings"]["y"])}
+    
+    ### bring total on top
+    data_plot = {"data": {"Industry / Other": data["data"]["Industry / Other"],
+                          "Buildings": data["data"]["Buildings"],
+                          "Public electricity / heat": data["data"]["Public electricity / heat"],
+                          "Total": data["data"]["Total"]}}
+    
+    # total_temp = data["data"]["Total"].copy()
+    # data["data"].pop("Total")
+    # data["data"]["Total"] = total_temp 
+    
+    plot_with_toggle(title = "<b>Austria:</b> natural gas consumption by sector",
+                  filename = "AT_timeseries_gas_sectoral_consumption",
+                  unit = "Energy (TWh)", 
+                  data_plot = data_plot,
+                  time_res = "monthly",
+                  show_plot = True,
+                  source_text = "eurotsat (NRG_CB_GASM)",
+                  info_text = "Bulidings data before 09/2023 not available.",
+                  initial_visible = "bar")
+
+
+    return data
+                                           
     
 if __name__ == "__main__":
     print("Plotting ...")
-    # extrapolate_fossil_fuels()
-    data = extrapolate_emissions(plot = True)
+    extrapolate_fossil_fuels()
+    # data = extrapolate_emissions(plot = True)
+    
+    # data = plot_ng_separation()
     
     # data = plot_extrapolation_demo()
     # plot_emission_estimate_demo()

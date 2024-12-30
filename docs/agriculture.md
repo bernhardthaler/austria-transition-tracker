@@ -26,6 +26,46 @@ permalink: /agriculture/
 
 </div> 
 
+<div id="energy_use" class="row">
+  <div class="spacer"></div>
+
+  <div class="header-container">
+    <h3 class="section-header">Energy use</h3>
+    <hr>
+  </div>
+
+  <div class="spacer"></div>
+</div>
+
+
+<div class="row">
+ <div class="spacer"></div>
+
+  <div class="column_left">
+    {% include AT_timeseries_agriculture_final_energy_use.html %}
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="column_right">
+    {% include AT_timeseries_agriculture_final_energy_use_share.html %}
+  </div>
+   <div class="spacer"></div>
+
+</div> 
+
+
+<div id="animal_products" class="row">
+  <div class="spacer"></div>
+
+  <div class="header-container">
+    <h3 class="section-header">Animal products / consumption</h3>
+    <hr>
+  </div>
+
+  <div class="spacer"></div>
+</div>
+
 
 <div class="row">
  <div class="spacer"></div>
@@ -71,7 +111,7 @@ permalink: /agriculture/
   <div class="spacer"></div>  
 
   <div class="column_right">
-    {% include AT_timeseries_fertilizer_nitrogen.html %}
+    <!-- {% include AT_timeseries_fertilizer_nitrogen.html %} -->
   </div>
    <div class="spacer"></div>
 
@@ -98,19 +138,17 @@ permalink: /agriculture/
  <div class="spacer"></div>
 
   <div class="column_left">
-    {% include AT_timeseries_agriculture_final_energy_use_share.html %}
+    {% include AT_timeseries_milk_consumption_total.html %}
   </div>
 
-  <div class="spacer"></div>
+  <div class="spacer"></div>  
 
   <div class="column_right">
-    {% include AT_timeseries_agriculture_final_energy_use.html %}
+    {% include AT_timeseries_milk_consumption_per_capita.html %}
   </div>
    <div class="spacer"></div>
 
 </div> 
-
-
 
 
 

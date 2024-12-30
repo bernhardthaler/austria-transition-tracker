@@ -1,9 +1,9 @@
 {
       "meta": {
             "chart": "AT_timeseries_lulucf_emissions_sectors",
-            "data_source": "UNFCC, sectoral data 2023 extrapolated",
+            "data_source": "EEA, sectoral data 2023 extrapolated",
             "info": "",
-            "created": "2024-10-16"
+            "created": "2024-12-28"
       },
       "Forests": {
             "1990-01-01": -11.049250590296698,
