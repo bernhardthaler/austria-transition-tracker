@@ -35,6 +35,6 @@ def plot_all():
     plot_energy_balance.plot()
     plot_food_consumption.plot()
     
-  
+    
 if __name__ == "__main__": 
     plot_all()

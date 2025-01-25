@@ -256,7 +256,7 @@ def plot_single_go(title = "",
                                customdata = y_data,
                                legendgroup = data,
                                xhoverformat = "<b>%Y<b>",
-                               line = dict(color = greys[7]),
+                               line = dict(color = greys[7][1]),
                                hovertemplate = hovertemplate))
             else: 
                 if start: 

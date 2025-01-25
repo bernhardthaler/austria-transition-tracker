@@ -126,13 +126,15 @@ def filt(sector = "Agriculture"):
         sub_sectors = {"forest_land": {"codes": ["4.A - Forest Land"],
                                             "name": "Forests"},
                        "crop_land": {"codes": ["4.B - Cropland"],
-                                                "name": "Croplaand"},
+                                                "name": "Cropland"},
                        "grass_land":  {"codes": ["4.C - Grassland"],
                                        "name": "Grassland"},
                        "wet_land": {"codes": ["4.D - Wetlands"],
                                     "name": "Wetlands"},
                        "settlements": {"codes": ["4.E - Settlements"],
                                        "name": "Settlements"},
+                       "other_land": {"codes": ["4.F - Other Land"],
+                                      "name": "Other land"},
                        "harvested_wood_products": {"codes": ["4.G - Harvested Wood Products"],
                                        "name": "Wood products"},
                        }
@@ -171,6 +173,9 @@ def filt(sector = "Agriculture"):
 
 
     ### CORRECTIONS 
+    
+    ### Austria counts waste burning for elec/heat to waste-sector, UNFCC to energy-sector 
+    ### correct here by shares uf uel energies
     shares_fuels_energy,_ = filter_file(name = "electricity_heat_generation_fuel_shares",
                                         sub_sectors = ["Liquid", "Solid", "Gaseous", "Other"])
     
@@ -183,12 +188,55 @@ def filt(sector = "Agriculture"):
         data_out["data"]["Waste incineration for power/heat generation"]["y"] *= np.array(shares_fuels_energy["Other"])/100
     if sector == "Energy & Industry": 
         data_out["data"]["Electricity and heat generation"]["y"] *= (1-np.array(shares_fuels_energy["Other"])/100)
-    if sector == "Fluorinated Gases": 
-        years, emissions = get_data("2.C.3 - Aluminium Production", gas = "Fluorinated gases - (CO2 equivalent)") 
-        data_out["data"]["Aluminium industry"]["y"] = np.array(emissions)/1e6
-        years, emissions = get_data("2.C.4 - Magnesium Production", gas = "Fluorinated gases - (CO2 equivalent)") 
-        data_out["data"]["Magnesium industry"]["y"] = np.array(emissions)/1e6       
+        
+        
+    # if sector == "Fluorinated Gases": 
+    #     years, emissions = get_data("2.C.3 - Aluminium Production", gas = "Fluorinated gases - (CO2 equivalent)") 
+    #     data_out["data"]["Aluminium industry"]["y"] = np.array(emissions)/1e6
+    #     years, emissions = get_data("2.C.4 - Magnesium Production", gas = "Fluorinated gases - (CO2 equivalent)") 
+    #     data_out["data"]["Magnesium industry"]["y"] = np.array(emissions)/1e6       
     
+    
+    ### corrections with last 2023 data
+    # data_aagi_2023 = pd.read_excel(os.path.join(os.path.dirname(os.path.realpath(__file__)),
+    #                                   "../../data_raw/Umweltbundesamt/aagi_1990_2023_data.xlsx"),
+    #                                index_col = "Category", thousands = ",")
+    
+    
+    data_aagi_2023 = pd.read_csv(os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                      "../../data_raw/Umweltbundesamt/aagi_1990_2023_data.csv"),
+                                 index_col = "Category", thousands =",", sep = ";", decimal = ".")
+    for col in data_aagi_2023: 
+        data_aagi_2023[col] = pd.to_numeric(data_aagi_2023[col].str.replace(",", ""), errors="coerce")
+    
+    if times[-1].year != 2023: 
+        pass 
+    
+    ### complete new dataset of LULUCF starting 2024 database 
+    if sector == "LULUCF":
+        times =  pd.date_range(
+            start = datetime(year = years[0], month = 1, day = 1),
+            end = datetime(year = 2023, month = 1, day = 1),
+            freq="YS")
+        for uba_sector, uba_table_name in {"Forests": "A.    Forest Land",
+                                           "Cropland": "B.    Cropland",
+                                           "Grassland": "C.    Grassland",
+                                           "Wetlands": "D.    Wetlands",
+                                           "Settlements": "E.    Settlements" ,
+                                           "Other land": "F.    Other Land",
+                                           "Wood products": "G.    Harvested Wood Products"}.items(): 
+            data_lulucf = np.zeros(len(times))
+            for t in range(len(times)): 
+                if str(times[t].year) in data_aagi_2023: 
+                    print(times[t].year)
+                    print(data_aagi_2023[str(times[t].year)][uba_table_name])
+                    data_lulucf[t] = data_aagi_2023[str(times[t].year)][uba_table_name]/1000 #Mt
+                else: 
+                    data_lulucf[t] = data_out["data"][uba_sector]["y"][t]
+
+            data_out["data"][uba_sector]["x"] = times 
+            data_out["data"][uba_sector]["y"] = data_lulucf
+            
     sum_sectors = np.zeros(len(times))
     for sub_sector in data_out["data"]:
         sum_sectors += np.array(data_out["data"][sub_sector]["y"])
@@ -204,7 +252,7 @@ def filt(sector = "Agriculture"):
         data_out["data"]["Other"] = {"x": times,
                                      "y": np.array(statistical_difference)}
     
-        ### extend sectoral data 
+        ### extend sectoral data, if value still not present 
         if uba_emissions["data"][sector]["x"][-1] not in data_out["data"]["Other"]["x"]:
             for sub_sector in data_out["data"]: 
                 data_out["data"][sub_sector]["x"] = uba_emissions["data"][sector]["x"]
@@ -224,6 +272,4 @@ if __name__ == "__main__":
     # data = filt(sector = "Buildings")
     # data = filt(sector = "Fluorinated Gases")
     data = filt(sector = "LULUCF")
-
-
     # data = filt()

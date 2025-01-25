@@ -29,7 +29,7 @@ def plot(show_plot=False):
                                   "y": np.array(data_total)}
     
     
-    plot_with_toggle(title = "<b>Austrian GHG emissions</b> by sectors",
+    plot_with_toggle(title = "<b>Austrian GHG emissions</b> by sectors (without LULUCF)",
                   filename = "AT_timeseries_co2_emissions_sectors",
                   unit = "Emissions (Mt<sub>CO2e</sub>)", 
                   data_plot = emissions,
@@ -62,16 +62,16 @@ def plot(show_plot=False):
         data_emissions = filter_unfcc.filt(sector =  sector)
 
         if sector in ["LULUCF"]:
-            source_text = "EEA, sectoral data 2023 extrapolated"
+            source_text = "Umweltbundesamt AUSTRIA'S ANNUAL GREENHOUSE GAS INVENTORY 1990–2023"
             info_text = ""
             plot_type = "area_neg"
             
-            plot_single_go(title = "<b>%s GHG emissions</b> by sub-sectors" %(sector),
+            plot_single_go(title = "<b>AT %s GHG emissions</b> by sub-sectors" %(sector),
                           filename = "AT_timeseries_"+sectors[sector]["file"]+"_emissions_sectors",
                           unit = "Emissions (Mt<sub>CO2e</sub>)", 
                           data_plot = data_emissions,
                           time_res = "yearly",
-                          show_plot = show_plot,
+                          show_plot = True,
                           legend_inside = False,
                           source_text = source_text,
                           info_text = info_text,
@@ -83,7 +83,7 @@ def plot(show_plot=False):
             info_text =  "<Other> scaled to match total emissions from UBA, 2023 sectoral data extrapolated"
             plot_type = "area" 
     
-            plot_with_toggle(title = "<b>%s GHG emissions</b> by sub-sectors" %(sector),
+            plot_with_toggle(title = "<b>AT %s GHG emissions</b> by sub-sectors" %(sector),
                           filename = "AT_timeseries_"+sectors[sector]["file"]+"_emissions_sectors",
                           unit = "Emissions (Mt<sub>CO2e</sub>)", 
                           data_plot = data_emissions,

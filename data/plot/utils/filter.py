@@ -527,7 +527,11 @@ def filter_eurostat_cars(file = "AT_cars_road_eqs_carpda",
                 month_found = months[month] 
                 data_out = extend_car_registr(data_out, filepath, this_year, skiprows = 1,
                                               tot = "Pkw insgesamt", sheet_name = "Pkw")
-                
+            
+        if not file_found: 
+            this_year -=1 
+            month_found = 12
+            
         return data_out, month_found, this_year 
     
     return data_out 
