@@ -205,7 +205,8 @@ def filt(sector = "Agriculture"):
     
     data_aagi_2023 = pd.read_csv(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                       "../../data_raw/Umweltbundesamt/aagi_1990_2023_data.csv"),
-                                 index_col = "Category", thousands =",", sep = ";", decimal = ".")
+                                 index_col = "Category", thousands =",", sep = ";", decimal = ".",
+                                 encoding='latin-1')
     for col in data_aagi_2023: 
         data_aagi_2023[col] = pd.to_numeric(data_aagi_2023[col].str.replace(",", ""), errors="coerce")
     
@@ -213,29 +214,32 @@ def filt(sector = "Agriculture"):
         pass 
     
     ### complete new dataset of LULUCF starting 2024 database 
-    if sector == "LULUCF":
+    if sector in ["LULUCF"]:
         times =  pd.date_range(
             start = datetime(year = years[0], month = 1, day = 1),
             end = datetime(year = 2023, month = 1, day = 1),
             freq="YS")
-        for uba_sector, uba_table_name in {"Forests": "A.    Forest Land",
-                                           "Cropland": "B.    Cropland",
-                                           "Grassland": "C.    Grassland",
-                                           "Wetlands": "D.    Wetlands",
-                                           "Settlements": "E.    Settlements" ,
-                                           "Other land": "F.    Other Land",
-                                           "Wood products": "G.    Harvested Wood Products"}.items(): 
-            data_lulucf = np.zeros(len(times))
+        
+        if sector == "LULUCF": 
+            uba_sectors = {"Forests": "A.    Forest Land",
+                            "Cropland": "B.    Cropland",
+                            "Grassland": "C.    Grassland",
+                            "Wetlands": "D.    Wetlands",
+                            "Settlements": "E.    Settlements" ,
+                            "Other land": "F.    Other Land",
+                            "Wood products": "G.    Harvested Wood Products"}
+        
+        
+        for uba_sector, uba_table_name in uba_sectors.items(): 
+            data_uba = np.zeros(len(times))
             for t in range(len(times)): 
                 if str(times[t].year) in data_aagi_2023: 
-                    print(times[t].year)
-                    print(data_aagi_2023[str(times[t].year)][uba_table_name])
-                    data_lulucf[t] = data_aagi_2023[str(times[t].year)][uba_table_name]/1000 #Mt
+                    data_uba[t] = data_aagi_2023[str(times[t].year)][uba_table_name]/1000 #Mt
                 else: 
-                    data_lulucf[t] = data_out["data"][uba_sector]["y"][t]
+                    data_uba[t] = data_out["data"][uba_sector]["y"][t]
 
             data_out["data"][uba_sector]["x"] = times 
-            data_out["data"][uba_sector]["y"] = data_lulucf
+            data_out["data"][uba_sector]["y"] = data_uba
             
     sum_sectors = np.zeros(len(times))
     for sub_sector in data_out["data"]:

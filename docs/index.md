@@ -89,3 +89,32 @@ layout: home
 </div> 
 
 
+<div id="ghg_lulucf" class="row">
+  <div class="spacer"></div>
+
+  <div class="header-container">
+    <h3 class="section-header">GHG including LULUCF and shares</h3>
+    <hr>
+  </div>
+
+  <div class="spacer"></div>
+</div>
+
+
+<div class="row">
+
+ <div class="spacer"></div>
+
+  <div class="column_left">
+    {% include AT_timeseries_co2_emissions_sectors_with_LULUCF.html %}
+  </div>
+  
+ <div class="spacer"></div>
+
+  <div class="column_right">
+   {% include AT_timeseries_co2_emissions_sectors_shares.html %}
+  </div>
+
+   <div class="spacer"></div>
+
+</div> 

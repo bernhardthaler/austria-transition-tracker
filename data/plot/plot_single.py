@@ -448,20 +448,20 @@ def plot_with_toggle(title="",
         # Area traces
         if data in ["Total", "Domestic consumption"]: 
             visible = {0: "area",
-                       1: "bar",
-                       2: "line"}
+                        1: "bar",
+                        2: "line"}
             for k in range(3): 
                 fig.add_trace(
                     go.Scatter(x = data_plot["data"][data]["x"], 
-                               y = np.array(data_plot["data"][data]["y"])/unit_fac,
-                               mode='lines',
-                               name = data,
-                               customdata = y_data,
-                               legendgroup = data,
-                               xhoverformat = "<b>%Y<b>",
-                               visible = initial_visible == visible[k],
-                               line = dict(color = [color[1] for color in greys if color[0] == 0.875][0]),
-                               hovertemplate = hovertemplate))
+                                y = np.array(data_plot["data"][data]["y"])/unit_fac,
+                                mode='lines',
+                                name = data,
+                                customdata = y_data,
+                                legendgroup = data,
+                                xhoverformat = "<b>%Y<b>",
+                                visible = initial_visible == visible[k],
+                                line = dict(color = [color[1] for color in greys if color[0] == 0.875][0]),
+                                hovertemplate = hovertemplate))
             ymax_area -= max(np.array(data_plot["data"][data]["y"])/unit_fac)
             ymax_bar -= max(np.array(data_plot["data"][data]["y"])/unit_fac)
 
@@ -509,6 +509,7 @@ def plot_with_toggle(title="",
     
         color_ind += 1
     
+      
     # Add buttons for toggling chart types
     fig.update_layout(
         updatemenus=[
@@ -518,8 +519,6 @@ def plot_with_toggle(title="",
                 xanchor = "left",
                 font=dict(size=9),  # Smaller font size
                 pad=dict(l=1, r=1, t=1, b=1),  # Reduce padding
-                # bgcolor="rgba(200, 200, 200, 0.7)",  # Optional: Add a semi-transparent background
-                # borderwidth=1,  # Optional: Set border width
                 x=1.01,  # Position outside the plot
                 y=1,
                 buttons = [
