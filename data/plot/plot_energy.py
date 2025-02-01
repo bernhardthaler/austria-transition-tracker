@@ -105,14 +105,14 @@ def plot():
     set2 = px.colors.qualitative.Set2
     set3 = px.colors.qualitative.Set3
     
-    colors_siecs ={"PV": set3[5],
+    colors_siecs ={"PV": set2[1],
                    "Wind": dark2[0],
                    "Hydro": set1[1],
                    "Biomass": dark2[4],
                     "Natural gas": dark2[5],
                     "Coal": dark2[7],
                     "Waste": dark2[2],
-                    "Other": dark2[1],
+                    "Other": set3[9],
                     }    
     
     data  = filter_eurostat_energy_balance(bals = ["Gross electricity production"],
