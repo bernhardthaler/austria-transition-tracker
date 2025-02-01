@@ -28,11 +28,11 @@ def filter_econtrol_monthly():
     for energy_type, codes in {"PV": ["84"],
                                 "Wind": ["83"],
                                 "Hydro": ["72"],
-                              "Biomass":  ["79"],
+                              "Biomass":  ["79", "80"],
                               "Natural gas": ["77"],
                               "Coal": ["73", "74"],
                                "Waste": [],
-                              "Other": ["75","76", "80", "81","85", "88"],
+                              "Other": ["75","76", "81","85", "88"],
                               "Domestic consumption": ["92"]
                               }.items(): 
         
