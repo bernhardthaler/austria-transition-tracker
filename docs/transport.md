@@ -9,9 +9,10 @@ permalink: /transport/
 
   <div class="column_left">
     <br>
-    Transport emissions, as documented according to international accounting standards, stem almost exclusively from the combustion of gasoline and diesel in the road sector (passenger and freight tansport). Ship, rail, national aviation and mobile military vehicles have minor contributions (included in Other). As can be seen in the graphics to the right, large parts of the emissions in Austria stem from fuel exports ("tank tourism"). <br>    
+    Transport emissions, as documented according to international accounting standards, stem almost exclusively from the combustion of gasoline and diesel in the road sector (passenger and duty vehicles). Ship, rail, national aviation and mobile military vehicles have minor contributions (included in Other). <br>
+    <!-- As can be seen in the graphics to the right, large parts of the emissions in Austria stem from fuel exports ("tank tourism"). <br>     -->
     <br> 
-    Although emissions of international aviation are not included in the national emission statistics, their contribution by combustion of kerosene to the real emissions is still significant (see Kerosene consumption below). <br>
+    Emissions of international aviation are not included in the national emission statistics, their contribution by combustion of kerosene to the real emissions is however still significant (see Kerosene consumption below). <br>
     <br>
     Data tracked on this page are mostly related to road transport, including monthly fuel consumption, new registrations and stock of different vehicle classes by type of motor energy. <br>
     <br>
