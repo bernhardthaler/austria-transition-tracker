@@ -18,6 +18,7 @@ import plot_energy
 import plot_waste 
 import plot_energy_balance 
 import plot_food_consumption 
+import plot_car_brands 
 
 def plot_all():
     print("Plotting ... ")
@@ -34,6 +35,7 @@ def plot_all():
     plot_energy.plot()
     plot_energy_balance.plot()
     plot_food_consumption.plot()
+    plot_car_brands.plot()
     
     
 if __name__ == "__main__": 

@@ -163,6 +163,42 @@ permalink: /transport/
  <div class="spacer"></div>
 
   <div class="column_left">
+    {% include AT_timeseries_monthly_registrations_brands_shares.html %}
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="column_right">
+    {% include AT_timeseries_monthly_registrations_brands_absolute.html %}
+  </div>
+   <div class="spacer"></div>
+
+</div> 
+
+
+
+<div class="row">
+ <div class="spacer"></div>
+
+  <div class="column_left">
+    {% include AT_timeseries_yearly_registrations_brands_shares.html %}
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="column_right">
+    {% include AT_timeseries_yearly_registrations_brands_absolute.html %}
+  </div>
+   <div class="spacer"></div>
+
+</div> 
+
+
+
+<div class="row">
+ <div class="spacer"></div>
+
+  <div class="column_left">
     {% include AT_timeseries_share_fuel_new_lorries_le3p5.html %}
   </div>
 

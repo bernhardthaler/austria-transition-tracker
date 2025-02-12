@@ -195,7 +195,7 @@ def plot():
 
 
 
-    plot_with_toggle(title = "<b>Yearly electricity production (gross)</b>: energy ",
+    plot_with_toggle(title = "<b>Yearly electricity production AT (gross)</b>: energy ",
                   filename = "AT_timeseries_elec_energy_use",
                   unit = "Energy (TWh)", 
                   data_plot = data_plot,
@@ -206,7 +206,7 @@ def plot():
                   info_text = "Note: no Waste-data available in E-control data.",
                   initial_visible = "bar")
     
-    plot_with_toggle(title = "<b>Yearly electricity production (gross)</b>: shares of production",
+    plot_with_toggle(title = "<b>Yearly electricity production AT (gross)</b>: shares of production",
                   filename = "AT_timeseries_elec_energy_use_share",
                   unit = "Share [%]", 
                   data_plot = data_rel,
@@ -220,7 +220,7 @@ def plot():
                   initial_visible = "bar")
     
 
-    plot_with_toggle(title = "<b>Yearly electricity production (gross)</b>: shares of consumption",
+    plot_with_toggle(title = "<b>Yearly electricity production AT (gross)</b>: shares of consumption",
                   filename = "AT_timeseries_elec_energy_use_share_cons",
                   unit = "Share [%]", 
                   data_plot = data_rel_cons,
@@ -250,7 +250,7 @@ def plot():
                                           data_monthly["data"]["Domestic consumption"]["y"])}
             
             
-    plot_with_toggle(title = "<b>Monthly electricity production (gross)</b>: energy ",
+    plot_with_toggle(title = "<b>Monthly electricity production AT (gross)</b>: energy ",
                   filename = "AT_timeseries_elec_prod_monthly",
                   unit = "Energy (TWh)", 
                   data_plot = data_monthly,
@@ -261,7 +261,7 @@ def plot():
                   plot_type = "area")
     
     
-    plot_with_toggle(title = "<b>Monthly electricity production (gross)</b>: shares of production",
+    plot_with_toggle(title = "<b>Monthly electricity production AT (gross)</b>: shares of production",
                   filename = "AT_timeseries_elec_prod_monthly_share",
                   unit = "Share [%]", 
                   data_plot = data_rel,
@@ -272,7 +272,7 @@ def plot():
                   plot_type = "area",
                   plotmax_fac = 1)
         
-    plot_with_toggle(title = "<b>Monthly electricity production (gross)</b>: shares of consumption",
+    plot_with_toggle(title = "<b>Monthly electricity production AT (gross)</b>: shares of consumption",
                   filename = "AT_timeseries_elec_prod_monthly_share_cons",
                   unit = "Share [%]", 
                   data_plot = data_rel_cons,

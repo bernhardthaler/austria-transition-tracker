@@ -130,7 +130,7 @@ def plot():
     data = filter_car_registrations()
     data_rel, data_abs = get_car_vectors(data) 
     
-    plot_with_toggle(title = "<b>New monthly car registrations:</b> fuel type share",
+    plot_with_toggle(title = "<b>AT new monthly car registrations:</b> fuel type share",
                   filename = "AT_timeseries_share_fuel_new_cars",
                   unit = "Share [%]", 
                   data_plot = data_rel,
@@ -140,7 +140,7 @@ def plot():
                   initial_visible = "area",
                   plotmax_fac = 1)
     
-    plot_with_toggle(title = "<b>New monthly car registrations:</b> fuel type absolute number",
+    plot_with_toggle(title = "<b>AT new monthly car registrations:</b> fuel type absolute number",
                   filename = "AT_timeseries_number_fuel_new_cars",
                   unit = "Number", 
                   data_plot = data_abs,
@@ -180,7 +180,7 @@ def plot():
     data_yearly_abs["data"].pop("Total")
     
     
-    plot_with_toggle(title = "<b>New yearly car registrations</b>: fuel type share",
+    plot_with_toggle(title = "<b>AT new yearly car registrations</b>: fuel type share",
                   filename = "AT_timeseries_share_fuel_new_cars_yearly",
                   unit = "Share [%]", 
                   data_plot = data_yearly_rel,
@@ -192,7 +192,7 @@ def plot():
                   legend_inside=False,
                   plotmax_fac = 1)
     
-    plot_with_toggle(title = "<b>New yearly car registrations</b>: fuel type absolute number",
+    plot_with_toggle(title = "<b>AT new yearly car registrations</b>: fuel type absolute number",
                   filename = "AT_timeseries_number_fuel_new_cars_yearly",
                   unit = "Number", 
                   data_plot = data_yearly_abs,
@@ -216,7 +216,7 @@ def plot():
                  "Others before 2013 include also Hybrids" %(this_year,month,this_year,this_year))
 
     
-    plot_with_toggle(title = "<b>Registered cars:</b> fuel type share",
+    plot_with_toggle(title = "<b>AT registered cars:</b> fuel type share",
                   filename = "AT_timeseries_share_fuel_stock_cars",
                   unit = "Share [%]", 
                   data_plot = data_rel,
@@ -229,7 +229,7 @@ def plot():
                   initial_visible = "bar",
                   plotmax_fac = 1)
         
-    plot_with_toggle(title = "<b>Registered cars:</b> fuel type absolute number",
+    plot_with_toggle(title = "<b>AT registered cars:</b> fuel type absolute number",
                   filename = "AT_timeseries_number_fuel_stock_cars",
                   unit = "Number", 
                   data_plot = data_abs,
@@ -247,7 +247,7 @@ def plot():
                                 options = {"vehicle": "VG_LE3P5"})
     data_rel, data_abs = get_car_vectors(data) 
     
-    plot_with_toggle(title = "<b>New lorry (≤3.5t) registrations:</b> fuel type share",
+    plot_with_toggle(title = "<b>AT new lorry (≤3.5t) registrations:</b> fuel type share",
               filename = "AT_timeseries_share_fuel_new_lorries_le3p5",
               unit = "Share [%]", 
               data_plot = data_rel,
@@ -258,7 +258,7 @@ def plot():
               initial_visible = "bar",
               plotmax_fac = 1)
     
-    plot_with_toggle(title = "<b>New lorry (≤3.5t) registrations:</b> fuel type absolute number",
+    plot_with_toggle(title = "<b>AT new lorry (≤3.5t) registrations:</b> fuel type absolute number",
               filename = "AT_timeseries_number_fuel_new_lorries_le3p5",
               unit = "Number", 
               data_plot = data_abs,
@@ -273,7 +273,7 @@ def plot():
                                 options = {"vehicle": "LOR_GT3P5"})
     data_rel, data_abs = get_car_vectors(data) 
     
-    plot_with_toggle(title = "<b>New lorry (>3.5t) registrations:</b> fuel type share",
+    plot_with_toggle(title = "<b>AT new lorry (>3.5t) registrations:</b> fuel type share",
               filename = "AT_timeseries_share_fuel_new_lorries_gt3p5",
               unit = "Share [%]", 
               data_plot = data_rel,
@@ -284,7 +284,7 @@ def plot():
               initial_visible = "bar",
               plotmax_fac = 1)
     
-    plot_with_toggle(title = "<b>New lorry (>3.5t) registrations:</b> fuel type absolute number",
+    plot_with_toggle(title = "<b>AT new lorry (>3.5t) registrations:</b> fuel type absolute number",
               filename = "AT_timeseries_number_fuel_new_lorries_gt3p5",
               unit = "Number", 
               data_plot = data_abs,
@@ -298,7 +298,7 @@ def plot():
     ### railway network 
     data_abs, data_rel = filter_railways()
     
-    plot_with_toggle(title = "<b>Rail track lengths</b>: absolute length",
+    plot_with_toggle(title = "<b>AT rail track lengths</b>: absolute length",
               filename = "AT_timeseries_rail_tracks_abs",
               unit = "Length (km)", 
               data_plot = data_abs,
@@ -307,7 +307,7 @@ def plot():
               source_text = "eurostat (rail_if_line_tr) & Statistik Austria",
               initial_visible = "line")   
     
-    plot_with_toggle(title = "<b>Rail track lengths</b>: shares electrified/non-electrified",
+    plot_with_toggle(title = "<b>AT rail track lengths</b>: shares electrified/non-electrified",
               filename = "AT_timeseries_rail_tracks_rel",
               unit = "Share (%)", 
               data_plot = data_rel,

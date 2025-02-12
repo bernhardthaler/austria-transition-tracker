@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_raw_cow_milk",
             "data_source": "eurostat (apro_mk_colm)",
             "info": null,
-            "created": "2025-01-19"
+            "created": "2025-02-12"
       },
       "Monthly": {
             "1995-02-01": 173.0,

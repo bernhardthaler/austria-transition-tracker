@@ -3,7 +3,7 @@
             "chart": "AT_timeseries_lulucf_emissions_sectors",
             "data_source": "Umweltbundesamt AUSTRIA'S ANNUAL GREENHOUSE GAS INVENTORY 1990\u20132023",
             "info": "",
-            "created": "2025-01-26"
+            "created": "2025-02-12"
       },
       "Forests": {
             "1990-01-01": -13.532,
